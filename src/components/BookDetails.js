@@ -35,7 +35,7 @@ const BookDetails = () => {
       {book ? (
         <Routes>
           <Route path="" exact element={<BookGeneral book={book} id={id} />} />
-          <Route path="authors" element={<BookAuthors book={book} />} />
+          <Route path="authors" element={<BookAuthors book={book} id={id} />} />
           <Route path="photos" element={<BookPhotos book={book} />} />
         </Routes>
       ) : (
