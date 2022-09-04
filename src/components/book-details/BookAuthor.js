@@ -1,12 +1,15 @@
 import React, { useContext } from "react";
-import { dbService } from "../../fbase";
+import { dbService, storageService } from "../../fbase";
 import { ToasterContext } from "../../Ui/ToasterContext";
 import firebase from "firebase/compat/app";
+import profileImg from "../../Ui/profile-placeholder.png";
 const BookAuthor = ({ author, id }) => {
   const { addToast } = useContext(ToasterContext);
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
+      if (author.photos !== "")
+        await storageService.refFromURL(author.photos).delete();
       await dbService
         .collection("books")
         .doc(id)

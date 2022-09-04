@@ -1,9 +1,8 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { Button, Field, Message } from "../Ui";
 import profileImg from "../Ui/profile-placeholder.png";
 
 const AuthorForm = ({ error, loading, onSubmit, author, setAuthor }) => {
-  const imgRef = useRef();
   const handleChange = (e) => {
     setAuthor({
       ...author,
@@ -17,7 +16,6 @@ const AuthorForm = ({ error, loading, onSubmit, author, setAuthor }) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = (e) => {
-      imgRef.current.src = e.target.result;
       setAuthor({
         ...author,
         photos: e.target.result,
@@ -40,7 +38,11 @@ const AuthorForm = ({ error, loading, onSubmit, author, setAuthor }) => {
         <Field labelText="사진" id="author-photo">
           <div>
             <figure>
-              <img ref={imgRef} src={profileImg} width="120" alt="" />
+              <img
+                src={author.photos === "" ? profileImg : author.photos}
+                width="120"
+                alt=""
+              />
             </figure>
             <input
               type="file"
