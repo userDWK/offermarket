@@ -4,7 +4,7 @@ import styled from "styled-components";
 const TextDiv = styled.div`
   width: 100%;
   height: 2.25rem;
-  margin: 3rem auto 0;
+  margin: 3.5rem auto 0;
 `;
 const TextBox = styled.input`
   width: 100%;
@@ -27,7 +27,7 @@ const TextLabel = styled.label`
 function TextForm(props) {
   return (
     <TextDiv>
-      <TextLabel htmlFor={props.id}>{`enter your ${props.name}`}</TextLabel>
+      <TextLabel htmlFor={props.id}>{`${props.text}`}</TextLabel>
       <TextBox {...props}></TextBox>
     </TextDiv>
   );

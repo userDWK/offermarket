@@ -17,17 +17,6 @@ const HeaderForm = styled.header`
   .mainCenter {
     width: 40%;
 
-    form {
-    }
-    select {
-      width: 15%;
-      height: 3rem;
-      border-bottom-left-radius: 0.5rem;
-      border-top-left-radius: 0.5rem;
-      vertical-align: middle;
-      text-align: left;
-      border: 2px solid rgba(50, 50, 50, 0.4);
-    }
     .search {
       border: 2px solid rgba(50, 50, 50, 0.4);
       padding: 0.5rem 0.75rem;
@@ -49,12 +38,17 @@ const HeaderForm = styled.header`
       border-left: none;
       background: orange;
       vertical-align: middle;
+      cursor: pointer;
     }
   }
 
   .mainRight {
     width: 35%;
     margin-right: 5rem;
+  }
+
+  .login {
+    font-weight: 600;
   }
 `;
 

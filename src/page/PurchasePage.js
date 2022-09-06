@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import MainHeader from "../components/Main/MainHeader";
 import PurchageMain from "../components/purchage/PurchageMain";
-import TradeResist from "./TradeResist";
+import PurchaseResistPage from "./PurchaseResistPage";
 
 function PurchasePage() {
   return (
@@ -10,7 +10,7 @@ function PurchasePage() {
       <MainHeader />
       <Routes>
         <Route path="" element={<PurchageMain />} />
-        <Route path="resist" element={<TradeResist />} />
+        <Route path="resist" element={<PurchaseResistPage />} />
       </Routes>
     </div>
   );

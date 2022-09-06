@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { authService } from "../../fbase";
 import firebase from "firebase/compat/app";
-import FormBox from "../../Ui/FormBox";
-import TextForm from "../../Ui/TextForm";
-import Button from "../../Ui/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { useRecoilState } from "recoil";
+import { IsLoggedIn } from "../../../atoms/State";
+import { authService } from "../../../fbase";
+import TextForm from "../../../Ui/TextForm";
+import FormBox from "../../../Ui/FormBox";
+import Button from "../../../Ui/Button";
 
-function LoginMain({ isLoggedIn }) {
+function LoginMain() {
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(IsLoggedIn);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -20,7 +23,6 @@ function LoginMain({ isLoggedIn }) {
     if (name === "email") setEmail(value);
     else if (name === "password") setPassword(value);
   };
-
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -61,6 +63,7 @@ function LoginMain({ isLoggedIn }) {
             value={email}
             placeholder="이메일"
             onChange={handleText}
+            text="로그인에 사용할 이메일을 입력하세요."
           />
           <TextForm
             type="password"
@@ -68,6 +71,7 @@ function LoginMain({ isLoggedIn }) {
             name="password"
             placeholder="비밀번호"
             onChange={handleText}
+            text="로그인에 사용할 비밀번호를 입력하세요."
           />
           <Button type="submit" login>
             로그인
@@ -77,10 +81,10 @@ function LoginMain({ isLoggedIn }) {
         <div className="formFootBox">
           <div className="helpBox">
             <p>
-              <Link to="find">find account</Link>
+              <Link to="find">계정 찾기</Link>
             </p>
             <p>
-              <Link to="create">create account</Link>
+              <Link to="create">회원 가입</Link>
             </p>
           </div>
           <div className="socialLogin">

@@ -24,9 +24,9 @@ const ButtonForm = styled.button`
       props.login &&
       css`
         width: 100%;
-        height: 2rem;
+        height: 2.5rem;
         background: orange;
-        margin: 3rem auto 1rem;
+        margin: 4rem auto 2rem;
         color: #111;
         text-align: center;
         font-size: 1rem;

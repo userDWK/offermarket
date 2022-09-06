@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { authService } from "../../fbase";
-import firebase from "firebase/compat/app";
-import FormBox from "../../Ui/FormBox";
-import TextForm from "../../Ui/TextForm";
-import Button from "../../Ui/Button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
-
-function CreateMain({ isLoggedIn }) {
+import { authService, dbService } from "../../../fbase";
+import FormBox from "../../../Ui/FormBox";
+import TextForm from "../../../Ui/TextForm";
+import Button from "../../../Ui/Button";
+import { useRecoilState } from "recoil";
+import { IsLoggedIn, UserObj } from "../../../atoms/State";
+function CreateMain() {
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(IsLoggedIn);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,6 +15,7 @@ function CreateMain({ isLoggedIn }) {
   const [address, setAddress] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [userObj, setUserObj] = useRecoilState(UserObj);
   const handleText = (e) => {
     const {
       target: { name, value },
@@ -32,6 +32,15 @@ function CreateMain({ isLoggedIn }) {
     try {
       let data;
       data = await authService.createUserWithEmailAndPassword(email, password);
+      const userInformation = {
+        name,
+        email,
+        password,
+        phone,
+        address,
+        uid: authService.currentUser.uid,
+      };
+      await dbService.collection("users").add(userInformation);
       navigate("/");
     } catch (error) {
       setError(error);
@@ -40,7 +49,7 @@ function CreateMain({ isLoggedIn }) {
   };
   return (
     <>
-      <FormBox create className="create">
+      <FormBox className="create">
         <h3>Create Account</h3>
         <form onSubmit={handleLogin}>
           <TextForm
@@ -50,6 +59,7 @@ function CreateMain({ isLoggedIn }) {
             value={name}
             placeholder="이름"
             onChange={handleText}
+            text="사용자 이름을 입력하세요."
           />
           <TextForm
             type="text"
@@ -58,6 +68,7 @@ function CreateMain({ isLoggedIn }) {
             value={email}
             placeholder="이메일"
             onChange={handleText}
+            text="로그인에 사용할 이메일을 입력하세요."
           />
           <TextForm
             type="password"
@@ -65,6 +76,7 @@ function CreateMain({ isLoggedIn }) {
             name="password"
             placeholder="비밀번호"
             onChange={handleText}
+            text="로그인에 사용할 비밀번호를 입력하세요."
           />
           <TextForm
             type="number"
@@ -73,6 +85,7 @@ function CreateMain({ isLoggedIn }) {
             value={phone}
             placeholder="휴대폰 번호 (-생략)"
             onChange={handleText}
+            text="배송, 인증에 사용될 연락처를 입력하세요."
           />
           <TextForm
             type="text"
@@ -81,6 +94,7 @@ function CreateMain({ isLoggedIn }) {
             value={address}
             placeholder="주소"
             onChange={handleText}
+            text="배송을 위한 주소를 입력하세요."
           />
           <Button type="submit" login>
             회원가입
