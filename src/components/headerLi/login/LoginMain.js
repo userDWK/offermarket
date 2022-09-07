@@ -73,7 +73,7 @@ function LoginMain() {
             onChange={handleText}
             text="로그인에 사용할 비밀번호를 입력하세요."
           />
-          <Button type="submit" login>
+          <Button type="submit" resist>
             로그인
           </Button>
         </form>

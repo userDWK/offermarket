@@ -17,7 +17,7 @@ const SelectForm = styled.select`
 
 function Selector(props) {
   return (
-    <SelectForm className={props.className}>
+    <SelectForm className={props.className} onChange={props.onChange}>
       <option value="">전체</option>
       <option value="woman">여성패션</option>
       <option value="man">남성패션</option>

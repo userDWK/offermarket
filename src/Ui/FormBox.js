@@ -46,7 +46,30 @@ const FormDiv = styled.div`
     props.className === "trade" &&
     css`
       width: 35rem;
-      height: 50rem;
+      height: 65rem;
+
+      .productPrice {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        input {
+          width: 96%;
+        }
+      }
+
+      .productImg {
+        figure {
+          text-align: center;
+          margin-top: 2rem;
+        }
+      }
+
+      .selectBox {
+        select {
+          width: 100%;
+          padding: 1rem 0;
+        }
+      }
     `}
 
   ${(props) =>

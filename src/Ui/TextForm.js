@@ -1,19 +1,29 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const TextDiv = styled.div`
   width: 100%;
-  height: 2.25rem;
   margin: 3.5rem auto 0;
 `;
+
 const TextBox = styled.input`
   width: 100%;
-  height: 100%;
+  height: 2.25rem;
   border: 1px solid rgba(50, 50, 50, 0.5);
   padding-left: 1rem;
   background: none;
   border-radius: 4px;
+
+  ${(props) =>
+    props.id === "productImage" &&
+    css`
+      margin-top: 1rem;
+      width: 14.8rem;
+      border: none;
+      padding: 0;
+    `}
 `;
+
 const TextLabel = styled.label`
   display: block;
   height: 1rem;
@@ -22,13 +32,20 @@ const TextLabel = styled.label`
   font-weight: bold;
   color: #111;
   opacity: 0.8;
+
+  ${(props) =>
+    props.htmlFor === "productImage" &&
+    css`
+      margin-top: 3rem;
+      width: 50%;
+    `}
 `;
 
 function TextForm(props) {
   return (
     <TextDiv>
       <TextLabel htmlFor={props.id}>{`${props.text}`}</TextLabel>
-      <TextBox {...props}></TextBox>
+      <TextBox id={props.id} {...props}></TextBox>
     </TextDiv>
   );
 }

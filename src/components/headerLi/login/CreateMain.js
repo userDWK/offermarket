@@ -96,7 +96,7 @@ function CreateMain() {
             onChange={handleText}
             text="배송을 위한 주소를 입력하세요."
           />
-          <Button type="submit" login>
+          <Button type="submit" resist>
             회원가입
           </Button>
         </form>

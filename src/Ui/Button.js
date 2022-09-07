@@ -21,7 +21,7 @@ const ButtonForm = styled.button`
       background: rgba(20, 20, 20, 0.1);
     `}}
     ${(props) =>
-      props.login &&
+      props.resist &&
       css`
         width: 100%;
         height: 2.5rem;
@@ -31,10 +31,29 @@ const ButtonForm = styled.button`
         text-align: center;
         font-size: 1rem;
       `}
+
+      ${(props) =>
+        props.product &&
+        css`
+          font-size: 1rem;
+          font-weight: 300;
+          width: 100%;
+          height: 2.25rem;
+          margin-top: 3.6rem;
+          background: rgba(50, 50, 50, 0.1);
+          box-shadow: none;
+          line-height: 180%;
+          span {
+            font-size: 1.25rem;
+          }
+          &:hover {
+            background: rgba(0, 0, 0, 0.1);
+          }
+        `}
 `;
 
 function Button({ ...rest }) {
-  return <ButtonForm {...rest}></ButtonForm>;
+  return <ButtonForm onClick={rest.onclick} {...rest}></ButtonForm>;
 }
 
 export default Button;
