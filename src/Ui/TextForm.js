@@ -39,6 +39,12 @@ const TextLabel = styled.label`
       margin-top: 3rem;
       width: 50%;
     `}
+
+  ${(props) =>
+    props.htmlFor === "sellPrice" &&
+    css`
+      margin-left: 16.5%;
+    `}
 `;
 
 function TextForm(props) {

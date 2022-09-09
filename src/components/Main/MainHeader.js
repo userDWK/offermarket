@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "../../Ui/Header";
 import Nav from "../../Ui/Nav";
@@ -44,8 +44,8 @@ function MainHeader() {
                 <li>마이페이지</li>
               </Link>
               <Link to="/login">
-                <li className={(isLoggedIn && "login").toString()}>
-                  {isLoggedIn ? userObj.name + " 님" : "로그인"}
+                <li className={(userObj ? "login" : "").toString()}>
+                  {userObj ? userObj.name + " 님" : "로그인"}
                 </li>
               </Link>
             </ul>

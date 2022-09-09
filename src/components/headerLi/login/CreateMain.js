@@ -40,7 +40,11 @@ function CreateMain() {
         address,
         uid: authService.currentUser.uid,
       };
-      await dbService.collection("users").add(userInformation);
+      await dbService
+        .collection("users")
+        .doc(userInformation.uid)
+        .set(userInformation);
+
       navigate("/");
     } catch (error) {
       setError(error);

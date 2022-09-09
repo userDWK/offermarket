@@ -77,7 +77,6 @@ function LoginMain() {
             로그인
           </Button>
         </form>
-        <hr />
         <div className="formFootBox">
           <div className="helpBox">
             <p>

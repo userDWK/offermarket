@@ -3,11 +3,12 @@ import styled, { css } from "styled-components";
 
 const FormDiv = styled.div`
   width: 25rem;
-  height: 29rem;
+  height: 32rem;
   margin: 5rem auto;
   border: 2px solid rgba(50, 50, 50, 0.2);
   border-radius: 3px;
   padding: 0.5rem 2rem 2rem;
+  position: relative;
 
   h3 {
     font-size: 2rem;
@@ -28,17 +29,21 @@ const FormDiv = styled.div`
   }
 
   .formFootBox {
-    margin-top: 0.9rem;
+    margin-top: 2.25rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 0.25rem;
+    padding: 1.35rem 0.25rem;
+    border-top: 1px solid rgba(50, 50, 50, 0.2);
 
     .socialLogin {
       svg {
         font-size: 1.75rem;
         margin: 0 0.35rem;
         cursor: pointer;
+        &:hover {
+          transform: scale(1.2);
+        }
       }
     }
   }
@@ -49,18 +54,38 @@ const FormDiv = styled.div`
       height: 65rem;
 
       .productPrice {
-        display: flex;
-        justify-content: space-between;
         width: 100%;
-        input {
-          width: 96%;
+        div {
+          box-sizing: border-box;
+          display : inline-block;
+          width : 46%;
+        }
+        }
+        label {
+          width : 100%;
+        }
+        #salePrice {
+        margin-right : 2%;
+        }
+        #sellPrice {
+          
+          margin-left : 16.5%;
         }
       }
+      
 
       .productImg {
+       
         figure {
           text-align: center;
           margin-top: 2rem;
+       
+          img {
+            min-width: 12rem;
+            max-width: 15rem;
+            min-height: 12rem;
+            max-height: 15rem;
+          }
         }
       }
 
@@ -75,7 +100,7 @@ const FormDiv = styled.div`
   ${(props) =>
     props.className === "create" &&
     css`
-      height: 41rem;
+      height: 48rem;
     `}
 `;
 

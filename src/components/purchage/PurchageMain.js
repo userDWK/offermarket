@@ -8,7 +8,7 @@ const PurchageMain = () => {
   return (
     <ProductCon>
       <div className="productResist">
-        <Link to="resist">
+        <Link to="/purchase/resist">
           <Button>구매 등록하기</Button>
         </Link>
       </div>

@@ -1,17 +1,25 @@
 import styled, { css } from "styled-components";
 
 const ButtonForm = styled.button`
-  width: 10rem;
-  height: 4rem;
-  font-size: 1.5rem;
+  width: 9rem;
+  height: 3.25rem;
+  font-size: 1.15rem;
   font-weight: bold;
   color: #111;
   border-radius: 4px;
   border: 1px solid rgba(50, 50, 50, 0.4);
-  background: rgba(50, 200, 230, 0.3);
+  background: rgba(50,50,50,0.1);
   margin-right: 3rem;
-  box-shadow: 0 0 6px rgba(50, 50, 50, 0.5);
+  box-shadow: 0 0 4px rgba(50, 50, 50, 0.3);
   cursor : pointer;
+
+  &:hover {
+    background : rgba(230,150,0,0.7);
+  }
+
+  &:focus {
+    box-shadow: 0 0 10px rgba(200, 150, 0, 1);
+  }
   ${(props) =>
     props.all &&
     css`
@@ -23,7 +31,11 @@ const ButtonForm = styled.button`
     ${(props) =>
       props.resist &&
       css`
-        width: 100%;
+        position: absolute;
+        bottom: 5%;
+        left: 50%;
+        transform: translate(-50%);
+        width: 90%;
         height: 2.5rem;
         background: orange;
         margin: 4rem auto 2rem;
@@ -35,11 +47,14 @@ const ButtonForm = styled.button`
       ${(props) =>
         props.product &&
         css`
+          position: absolute;
+          bottom: 18%;
+          left: 50%;
+          transform: translate(-50%);
           font-size: 1rem;
           font-weight: 300;
-          width: 100%;
+          width: 90%;
           height: 2.25rem;
-          margin-top: 3.6rem;
           background: rgba(50, 50, 50, 0.1);
           box-shadow: none;
           line-height: 180%;

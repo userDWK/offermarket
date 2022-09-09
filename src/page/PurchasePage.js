@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import MainHeader from "../components/Main/MainHeader";
 import PurchageMain from "../components/purchage/PurchageMain";
-import PurchaseResistPage from "./PurchaseResistPage";
+import PurchaseResistPage from "../components/purchage/PurchaseResistPage";
 
 function PurchasePage() {
   return (

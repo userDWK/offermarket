@@ -39,6 +39,13 @@ const HeaderForm = styled.header`
       background: orange;
       vertical-align: middle;
       cursor: pointer;
+
+      &:hover {
+        background: rgba(230, 150, 0, 0.7);
+      }
+      &:focus {
+        box-shadow: 0 0 10px rgba(200, 150, 0, 1);
+      }
     }
   }
 
