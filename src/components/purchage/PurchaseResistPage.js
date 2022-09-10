@@ -1,7 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { SellItem, UserObj, PurchaseItem } from "../../atoms/State";
+import {
+  SellItem,
+  UserObj,
+  PurchaseItem,
+  Today,
+  IsResisted,
+  HandleTime,
+} from "../../atoms/State";
 import { dbService, storageService } from "../../fbase";
 import firebase from "firebase/compat/app";
 import PurchaseResist from "./PurchaseResist";
@@ -10,10 +17,21 @@ function PurchaseResistPage() {
   const [userObj, setUserObj] = useRecoilState(UserObj);
   const [productImg, setProductImg] = useState("");
   const [purchaseItem, setPurchaseItem] = useRecoilState(PurchaseItem);
+  const [today, setToday] = useRecoilState(Today);
+  const [isResisted, setIsResisted] = useRecoilState(IsResisted);
+  const [handleTime, setHandleTime] = useRecoilState(HandleTime);
   const navigate = useNavigate();
 
   const handleProduct = async (e) => {
     e.preventDefault();
+    if (
+      !purchaseItem.productName ||
+      !purchaseItem.purchasePrice ||
+      !productImg
+    ) {
+      return console.error("모든 항목을 입력하십시오");
+    }
+    setHandleTime((prev) => !prev);
     const blob = await resizeImg();
     const photoName = `images/product/purchase/${Date.now()}.jpeg`;
     const imageRef = storageService.ref().child(photoName);
@@ -39,24 +57,36 @@ function PurchaseResistPage() {
       async () => {
         try {
           const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
-
           console.log("다운로드 URL : ", downloadURL);
+
+          await dbService.collection("purchase").doc(today).set({
+            category: purchaseItem.category,
+            uid: userObj.uid,
+            productName: purchaseItem.productName,
+            purchasePrice: purchaseItem.purchasePrice,
+            img: downloadURL,
+            resistDate: today,
+          });
+
           await dbService
             .collection("users")
             .doc(userObj.uid)
             .update({
               purchaseItems: firebase.firestore.FieldValue.arrayUnion({
+                category: purchaseItem.category,
                 productName: purchaseItem.productName,
                 purchasePrice: purchaseItem.purchasePrice,
                 img: downloadURL,
-                resistdate: Date.now(),
+                resistDate: today,
               }),
             });
+
           setPurchaseItem({
             productName: "",
             purchasePrice: 0,
             img: "",
           });
+          setIsResisted((prev) => !prev);
         } catch (e) {
           console.error("에러가 발생 하였습니다", e);
         }

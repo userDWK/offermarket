@@ -17,28 +17,28 @@ function MainFooter() {
         <Nav foot>
           <ul>
             <Link to="/footer">
+              <li>회사소개</li>
+            </Link>
+            <Link to="/footer">
+              <li>공지사항</li>
+            </Link>
+            <Link to="/footer">
               <li>개인정보 처리방침</li>
             </Link>
             <Link to="/footer">
               <li>이용 약관</li>
             </Link>
             <Link to="/footer">
-              <li>공지사항</li>
+              <li>내부의 소리</li>
             </Link>
             <Link to="/footer">
-              <li>공지사항</li>
+              <li>고객 요청 사항</li>
             </Link>
             <Link to="/footer">
-              <li>공지사항</li>
+              <li>인재 채용</li>
             </Link>
             <Link to="/footer">
-              <li>공지사항</li>
-            </Link>
-            <Link to="/footer">
-              <li>공지사항</li>
-            </Link>
-            <Link to="/footer">
-              <li>공지사항</li>
+              <li>광고 안내</li>
             </Link>
           </ul>
         </Nav>

@@ -23,11 +23,9 @@ const ButtonForm = styled.button`
   ${(props) =>
     props.all &&
     css`
-      position: absolute;
-      bottom: 5%;
-      right: 3rem;
       background: rgba(20, 20, 20, 0.1);
     `}}
+
     ${(props) =>
       props.resist &&
       css`

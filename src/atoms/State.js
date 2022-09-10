@@ -13,6 +13,7 @@ export const UserObj = atom({
 export const SellItem = atom({
   key: "sellItem",
   default: {
+    category: "",
     productName: "",
     salePrice: 0,
     sellPrice: 0,
@@ -24,6 +25,7 @@ export const SellItem = atom({
 export const PurchaseItem = atom({
   key: "purchaseItem",
   default: {
+    category: "",
     productName: "",
     purchasePrice: 0,
     img: "",
@@ -34,4 +36,29 @@ export const PurchaseItem = atom({
 export const Today = atom({
   key: "todayTime",
   default: "",
+});
+
+export const IsModal = atom({
+  key: "isModal",
+  default: false,
+});
+
+export const SellData = atom({
+  key: "sellData",
+  default: {},
+});
+
+export const PurchaseData = atom({
+  key: "purchaseData",
+  default: {},
+});
+
+export const IsResisted = atom({
+  key: "isResisted",
+  default: true,
+});
+
+export const HandleTime = atom({
+  key: "handleTime",
+  default: true,
 });

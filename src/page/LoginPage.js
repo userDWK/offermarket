@@ -5,6 +5,7 @@ import { useRecoilState } from "recoil";
 import { IsLoggedIn } from "../atoms/State";
 import LoginMain from "../components/headerLi/login/LoginMain";
 import CreateMain from "../components/headerLi/login/CreateMain";
+import MainFooter from "../components/Main/MainFooter";
 function LoginPage() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(IsLoggedIn);
   return (
@@ -14,6 +15,7 @@ function LoginPage() {
         <Route path="" element={<LoginMain />} />
         <Route path="create" element={<CreateMain />} />
       </Routes>
+      <MainFooter />
     </div>
   );
 }

@@ -5,9 +5,16 @@ import Product from "../../Ui/Product";
 import ProductBox from "../../Ui/ProductBox";
 import Section from "../../Ui/Section";
 import mainImage from "../../images/main.jpg";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { dbService } from "../../fbase";
+import firebase from "firebase/compat/app";
+import { query, orderBy, limit, getDocs } from "firebase/firestore";
+import { useRecoilState } from "recoil";
+import { PurchaseData, SellData } from "../../atoms/State";
 
 const MainMain = () => {
+  const [sellData, setSellData] = useRecoilState(SellData);
+  const [purchaseData, setPurchaseData] = useRecoilState(PurchaseData);
   return (
     <div className="mainMain">
       <Main>
@@ -27,27 +34,37 @@ const MainMain = () => {
         </div>
         <Section>
           <div className="productBox">
-            <h2>최신 등록 상품</h2>
-            <div className="registerBox">
-              <Link to="/purchase">
-                <Button purchase>구매 상품보기</Button>
-              </Link>
+            <h2>최근 등록된 상품들을 만나보세요!</h2>
+            <div className="registerBox"></div>
+          </div>
+          <hr />
+          <div className="mainGridBox">
+            <div className="mainSell">
+              <h2>판매 상품</h2>
+
               <Link to="/sell">
                 <Button sell>판매 상품보기</Button>
               </Link>
             </div>
+            <ProductBox main>
+              <Product className="sell" num="0"></Product>
+              <Product className="sell" num="1"></Product>
+              <Product className="sell" num="2"></Product>
+              <Product className="sell" num="3"></Product>
+            </ProductBox>
+            <div className="mainSell">
+              <h2>구매 상품</h2>
+              <Link to="/purchase">
+                <Button purchase>구매 상품보기</Button>
+              </Link>
+            </div>
+            <ProductBox main>
+              <Product className="purchase" num="0"></Product>
+              <Product className="purchase" num="1"></Product>
+              <Product className="purchase" num="2"></Product>
+              <Product className="purchase" num="3"></Product>
+            </ProductBox>
           </div>
-          <ProductBox>
-            <Product>1</Product>
-            <Product>2</Product>
-            <Product>3</Product>
-            <Product>4</Product>
-            <Product>5</Product>
-            <Product>6</Product>
-            <Product>7</Product>
-            <Product>8</Product>
-          </ProductBox>
-          <Button all>더 보기</Button>
         </Section>
       </Main>
     </div>

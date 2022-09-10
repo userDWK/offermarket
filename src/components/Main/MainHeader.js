@@ -43,7 +43,7 @@ function MainHeader() {
               <Link to="/profile">
                 <li>마이페이지</li>
               </Link>
-              <Link to="/login">
+              <Link to={userObj ? "/profile" : "/login"}>
                 <li className={(userObj ? "login" : "").toString()}>
                   {userObj ? userObj.name + " 님" : "로그인"}
                 </li>

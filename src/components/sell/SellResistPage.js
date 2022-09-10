@@ -1,7 +1,13 @@
 import React, { useCallback, useState } from "react";
 import { dbService, storageService } from "../../fbase";
 import { useRecoilState } from "recoil";
-import { SellItem, UserObj } from "../../atoms/State";
+import {
+  HandleTime,
+  IsResisted,
+  SellItem,
+  Today,
+  UserObj,
+} from "../../atoms/State";
 import SellResist from "./SellResist";
 import firebase from "firebase/compat/app";
 import { useNavigate } from "react-router-dom";
@@ -10,10 +16,22 @@ function SellResistPage() {
   const [userObj, setUserObj] = useRecoilState(UserObj);
   const [productImg, setProductImg] = useState("");
   const [sellItem, setSellItem] = useRecoilState(SellItem);
+  const [today, setToday] = useRecoilState(Today);
   const navigate = useNavigate();
+  const [isResisted, setIsResisted] = useRecoilState(IsResisted);
+  const [handleTime, setHandleTime] = useRecoilState(HandleTime);
 
   const handleProduct = async (e) => {
     e.preventDefault();
+    if (
+      !sellItem.productName ||
+      !sellItem.salePrice ||
+      !sellItem.sellPrice ||
+      !productImg
+    ) {
+      return console.error("모든 항목을 입력하십시오");
+    }
+    setHandleTime((prev) => !prev);
     const blob = await resizeImg();
     const photoName = `images/product/sell/${Date.now()}.jpeg`;
     const imageRef = storageService.ref().child(photoName);
@@ -39,26 +57,40 @@ function SellResistPage() {
       async () => {
         try {
           const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
-
           console.log("다운로드 URL : ", downloadURL);
+
+          await dbService.collection("sell").doc(today).set({
+            category: sellItem.category,
+            uid: userObj.uid,
+            productName: sellItem.productName,
+            salePrice: sellItem.salePrice,
+            sellPrice: sellItem.sellPrice,
+            img: downloadURL,
+            resistDate: today,
+          });
+
           await dbService
             .collection("users")
             .doc(userObj.uid)
             .update({
               sellItems: firebase.firestore.FieldValue.arrayUnion({
+                category: sellItem.category,
                 productName: sellItem.productName,
                 salePrice: sellItem.salePrice,
                 sellPrice: sellItem.sellPrice,
                 img: downloadURL,
+                resistDate: today,
               }),
             });
+
           setSellItem({
             productName: "",
             salePrice: 0,
             sellPrice: 0,
             img: "",
-            resistdate: Date.now(),
+            resistdate: today,
           });
+          setIsResisted((prev) => !prev);
         } catch (e) {
           console.error("에러가 발생 하였습니다", e);
         }

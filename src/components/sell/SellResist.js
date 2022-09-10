@@ -1,21 +1,19 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import Button from "../../Ui/Button";
 import FormBox from "../../Ui/FormBox";
 import ProductInformation from "../../Ui/ProductInformation";
 import Selector from "../../Ui/Selector";
 import TextForm from "../../Ui/TextForm";
 import empty from "../../images/productImg/empty.png";
-import { dbService } from "../../fbase";
-import { UserObj, SellItem, BlobData } from "../../atoms/State";
+import { SellItem } from "../../atoms/State";
 import { useRecoilState } from "recoil";
 
 const SellResist = ({ handleProduct, productImg, setProductImg }) => {
-  const [category, setCategory] = useState("");
-  const [productName, setProductName] = useState("");
-  const [beforeSalePrice, setBeforeSalePrice] = useState(0);
-  const [realSellPrice, setRealSellPrice] = useState(0);
+  // const [category, setCategory] = useState("");
+  // const [productName, setProductName] = useState("");
+  // const [beforeSalePrice, setBeforeSalePrice] = useState(0);
+  // const [realSellPrice, setRealSellPrice] = useState(0);
   const [toggle, setToggle] = useState(false);
-  const [userObj, setUserObj] = useRecoilState(UserObj);
   const [sellItem, setSellItem] = useRecoilState(SellItem);
 
   const handleImg = async (e) => {
