@@ -14,6 +14,19 @@ const ProductDiv = styled.div`
       grid-template-rows: 1fr;
       margin-top: 2.3rem;
     `}
+
+  .pageBox {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    bottom: 0%;
+    left: 0;
+    width: 100%;
+    height: 8%;
+    border-top: 1px solid rgba(200, 200, 200, 0.5);
+    background: rgba(255, 255, 255, 0.9);
+  }
 `;
 
 function ProductBox({ ...rest }) {

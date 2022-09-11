@@ -22,7 +22,6 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(IsLoggedIn);
   const [userObj, setUserObj] = useRecoilState(UserObj);
   const [today, setToday] = useRecoilState(Today);
-  const [timeCount, setTimeCount] = useState(0);
   const [sellData, setSellData] = useRecoilState(SellData);
   const [purchaseData, setPurchaseData] = useRecoilState(PurchaseData);
   const [isResisted, setIsResisted] = useRecoilState(IsResisted);
@@ -34,7 +33,6 @@ function App() {
     const data = await getDocs(q);
     setSellData(data.docs.map((doc) => doc.data()));
   };
-
   const purchaseDis = async () => {
     const purchaseRef = dbService.collection("purchase");
     const q = purchaseRef.orderBy("resistDate", "desc");
@@ -89,7 +87,6 @@ function App() {
   useEffect(() => {
     Time();
   }, [handleTime]);
-
   return (
     <Router>
       <div className="App">

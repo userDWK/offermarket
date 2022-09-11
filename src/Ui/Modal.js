@@ -12,7 +12,7 @@ const ModalBox = styled.div`
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.8);
-  zindex: 100;
+  z-index: 100;
   opacity : 0;
   transition : opacity 0.4s ease-in-out; !important;
   pointer-events : none;
@@ -33,7 +33,7 @@ const ModalForm = styled.div`
   width: 40rem;
   height: 14rem;
   background: rgba(255, 255, 255, 1);
-  zindex: 101;
+  z-index: 101;
   border: 1px solid black;
   border-radius: 10px;
 
@@ -41,7 +41,10 @@ const ModalForm = styled.div`
     position: absolute;
     top: 20%;
     left: 10%;
+    margin-right: 10%;
+    line-height: 160%;
     font-size: 1.25rem;
+    font-weight: bold;
   }
 
   .close {
@@ -68,17 +71,24 @@ const ModalForm = styled.div`
     right: 8rem;
     width: 13rem;
   }
-
+  ${(props) =>
+    props.login === undefined &&
+    css`
+      .login {
+        display: none;
+      }
+    `}
   overflow: hidden;
 `;
 
 const Modal = (props) => {
-  const [isModal, setIsModal] = useRecoilState(IsModal);
   return (
     <ModalBox show={props.show}>
-      <ModalForm>
+      <ModalForm login={props.login}>
         {props.children}
-        <span>로그인 후, 이용해 주세요.</span>
+        <span>
+          {props.type} : {props.text}
+        </span>
         <div className="close" onClick={props.close}>
           닫기
         </div>

@@ -2,7 +2,6 @@ import styled, { css } from "styled-components";
 
 const FooterForm = styled.footer`
   height: 30rem;
-  margin-top: 5rem;
   border-top: 1px solid rgba(50, 50, 50, 0.5);
   .companyIntro {
     max-width: 120rem;

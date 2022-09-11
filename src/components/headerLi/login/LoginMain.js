@@ -4,18 +4,21 @@ import firebase from "firebase/compat/app";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { useRecoilState } from "recoil";
-import { IsLoggedIn } from "../../../atoms/State";
-import { authService } from "../../../fbase";
+import { IsLoggedIn, IsModal, Message } from "../../../atoms/State";
+import { authService, dbService } from "../../../fbase";
 import TextForm from "../../../Ui/TextForm";
 import FormBox from "../../../Ui/FormBox";
 import Button from "../../../Ui/Button";
+import Modal from "../../../Ui/Modal";
 
 function LoginMain() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(IsLoggedIn);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [isModal, setIsModal] = useRecoilState(IsModal);
+  const [message, setMessage] = useRecoilState(Message);
   const navigate = useNavigate();
+
   const handleText = (e) => {
     const {
       target: { name, value },
@@ -29,8 +32,11 @@ function LoginMain() {
       let data;
       data = await authService.signInWithEmailAndPassword(email, password);
     } catch (error) {
-      setError(error);
-      console.error("로그인 에러", error);
+      setMessage({
+        type: "error",
+        message: "일치하지 않는 정보입니다",
+      });
+      setIsModal(true);
     }
   };
   const faceBookLogin = async (e) => {
@@ -44,14 +50,44 @@ function LoginMain() {
 
   const googleLogin = async (e) => {
     e.preventDefault();
-    const provider = new firebase.auth.GoogleAuthProvider();
-    await authService.signInWithPopup(provider).then((result) => {
-      let token = result.credential.accessToken;
-      let user = result.user;
-    });
+    try {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      await authService.signInWithPopup(provider).then((result) => {
+        let token = result.credential.accessToken;
+        let user = result.user;
+
+        const userInformation = {
+          email: user.email,
+          phone: user.phoneNumber,
+          address: "",
+          uid: authService.currentUser.uid,
+        };
+
+        dbService
+          .collection("users")
+          .doc(userInformation.uid)
+          .set(userInformation);
+
+        navigate("/");
+      });
+    } catch (error) {
+      setMessage({
+        type: "Error",
+        message: error,
+      });
+      setIsModal(true);
+    }
   };
   return (
     <>
+      <Modal
+        show={isModal}
+        text={message.message}
+        type={message.type}
+        close={() => {
+          setIsModal(false);
+        }}
+      ></Modal>
       <FormBox>
         <h3>Log In</h3>
         {isLoggedIn && navigate("/")}
@@ -64,6 +100,7 @@ function LoginMain() {
             placeholder="이메일"
             onChange={handleText}
             text="로그인에 사용할 이메일을 입력하세요."
+            autoComplete="on"
           />
           <TextForm
             type="password"
@@ -72,6 +109,7 @@ function LoginMain() {
             placeholder="비밀번호"
             onChange={handleText}
             text="로그인에 사용할 비밀번호를 입력하세요."
+            autoComplete="new-password"
           />
           <Button type="submit" resist>
             로그인

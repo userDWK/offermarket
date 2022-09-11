@@ -96,11 +96,29 @@ const FormDiv = styled.div`
         }
       }
     `}
+  ${(props) =>
+    props.className === "find" &&
+    css`
+      height: 20rem;
+    `}
 
   ${(props) =>
     props.className === "create" &&
     css`
-      height: 48rem;
+      height: 57rem;
+    `}
+
+    ${(props) =>
+    props.className === "profile" &&
+    css`
+      height: 43rem;
+      p {
+        font-size: 1.25rem;
+        margin: 2.5rem 0;
+      }
+      button:nth-child(4) {
+        width: 100%;
+      }
     `}
 `;
 

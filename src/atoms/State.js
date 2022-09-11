@@ -10,6 +10,14 @@ export const UserObj = atom({
   default: {},
 });
 
+export const Message = atom({
+  key: "message",
+  default: {
+    message: "",
+    type: "",
+  },
+});
+
 export const SellItem = atom({
   key: "sellItem",
   default: {
@@ -61,4 +69,14 @@ export const IsResisted = atom({
 export const HandleTime = atom({
   key: "handleTime",
   default: true,
+});
+
+export const DisSellPage = atom({
+  key: "disSellPage",
+  default: 1,
+});
+
+export const DisPurchasePage = atom({
+  key: "disPurchasePage",
+  default: 1,
 });

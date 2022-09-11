@@ -97,8 +97,8 @@ function PurchaseResistPage() {
 
   const resizeImg = async () => {
     const canvas = document.getElementById("canvas");
-    canvas.width = 250;
-    canvas.height = 250;
+    canvas.width = "250";
+    canvas.height = "250";
     const ctx = canvas.getContext("2d");
     const img = await createImg();
     const scale = Math.min(
