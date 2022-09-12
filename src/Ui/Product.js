@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled, { css } from "styled-components";
 import {
@@ -7,6 +7,9 @@ import {
   SellData,
   DisPurchasePage,
   DisSellPage,
+  PageLine,
+  UserObj,
+  SelectProduct,
 } from "../atoms/State";
 import Product_Purchase from "./UiComponent/Product_Purchase";
 import Product_Sell from "./UiComponent/Product_Sell";
@@ -75,23 +78,51 @@ function Product({ ...rest }) {
   const [purchaseData, setPurchaseData] = useRecoilState(PurchaseData);
   const [disSellPage, setDisSellPage] = useRecoilState(DisSellPage);
   const [disPurchasePage, setDisPurchasePage] = useRecoilState(DisPurchasePage);
-  const location = useLocation().pathname;
+  const [pageLine, setPageLine] = useRecoilState(PageLine);
+  const [userObj, setUserObj] = useRecoilState(UserObj);
+  const [selectProduct, setSelectProduct] = useRecoilState(SelectProduct);
+
+  const location = useLocation();
   useEffect(() => {
-    if (location === "/") {
+    if (location.pathname === "/") {
       setDisSellPage(1);
       setDisPurchasePage(1);
+      setPageLine(1);
     }
   }, [location]);
+
+  const handleProduct = (e) => {
+    if (e.currentTarget.className.includes("sell")) {
+      setSelectProduct(sellData[handleDis()]);
+    } else if (e.currentTarget.className.includes("purchase"))
+      setSelectProduct(purchaseData[handleDis()]);
+  };
+
+  const handleDis = () => {
+    return +rest.num + (disSellPage - 1) * 8;
+  };
   return (
-    <ProductForm className={rest.className}>
-      {rest.className === "sell"
-        ? +rest.num + 1 + (disSellPage - 1) * 8 <= sellData.length && (
-            <Product_Sell {...rest} />
-          )
-        : +rest.num + 1 + (disPurchasePage - 1) * 8 <= purchaseData.length && (
-            <Product_Purchase {...rest} />
-          )}
-    </ProductForm>
+    <Link
+      to={
+        sellData.length && purchaseData.length
+          ? `/sell/product/uid=${sellData[handleDis()].uid}/date=${
+              sellData[handleDis()].resistDate
+            }`
+          : "/"
+      }
+    >
+      <ProductForm className={rest.className} onClick={handleProduct}>
+        {rest.className === "sell"
+          ? +rest.num + 1 + (disSellPage - 1) * 8 <= sellData.length && (
+              <Product_Sell handleDis={handleDis} {...rest} />
+            )
+          : +rest.num + 1 + (disPurchasePage - 1) * 8 <=
+              purchaseData.length && (
+              <Product_Purchase handleDis={handleDis} {...rest} />
+            )}
+      </ProductForm>
+      //{" "}
+    </Link>
   );
 }
 

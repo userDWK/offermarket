@@ -120,6 +120,127 @@ const FormDiv = styled.div`
         width: 100%;
       }
     `}
+
+    ${(props) =>
+    props.className === "product" &&
+    css`
+      width: 60%;
+      height: 100%;
+      border : none;
+
+      .productMain {
+        display: flex;
+        justify-content: center;
+
+        .imgBox {
+          img {
+            width: 25rem;
+            height: 30rem;
+          }
+        }
+        .textBox {
+          flex: 1;
+
+          .textHeader {
+            display: flex;
+            justify-content: space-between;
+            // align-items: center;
+          }
+          .priceBox {
+            margin-bottom : 2rem;
+            p {
+              font-size: 1.25rem;
+              span {
+                position : relative;
+                color: rgba(50, 50, 50, 0.6);
+                &::before {
+                  content : "";
+                  display : block;
+                  position : absolute;
+                  top : 50%;
+                  left : 0;
+                  transform:translate(0,50%);
+                  width : 100%;
+                  height 1px;
+                  background : rgba(50,50,50,0.6);
+                }
+              }
+            }
+            strong {
+              font-size: 1.5rem;
+              color: #ae0000;
+              margin: 0.5rem 0 1.5rem;
+              font-weight: bold;
+            }
+          }
+          .shipBox {
+            margin : 1.5rem 0;
+          }
+          .sellerBox {
+            margin : 1.5rem 0;
+          }
+          .purchaseBox {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top : 3rem;
+            input {
+              width: 20%;
+              height: 4rem;
+              border: 1px solid rgba(50, 50, 50, 0.2);
+              border-radius: 5px;
+              font-size: 1.5rem;
+              text-align: center;
+            }
+            input[type="number"]::-webkit-outer-spin-button,
+            input[type="number"]::-webkit-inner-spin-button {
+              opacity : 1;
+              height : 3.8rem;
+              width : 4rem;
+              padding-right : 0.75rem;
+              margin: 0;
+              margin-right : -0.15rem;
+              outline : 1px solid rgba(50,50,50,0.2);
+              outline-right : 0;
+              // &::after {
+              //   // position : absolute;
+              //   // top : 0%;
+              //   // left : 0;
+              //   content : "";
+              //   display : block;
+              //   background : red;
+              //   width : 10px;
+              //   height : 10px;
+
+              // }
+            }
+            button {
+              margin-right: 0;
+              width: 36%;
+              height: 4rem;
+              background: rgba(250, 250, 250, 0.1);
+              border: solid 1px rgba(50, 150, 255, 1);
+              color: rgba(50, 150, 255, 1);
+              
+              &:hover {
+                background : rgba(50,150,50,0.7);
+                color : white;
+              }
+             
+
+              &:last-child {
+                background: rgba(50, 150, 255, 1);
+                color: white;
+
+                &:hover {
+                  background : rgba(50,100,255,1);
+                }
+              }
+            }
+          }
+        }
+      }
+    `}
 `;
 
 function FormBox(props) {

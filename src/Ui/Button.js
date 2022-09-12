@@ -63,6 +63,20 @@ const ButtonForm = styled.button`
             background: rgba(0, 0, 0, 0.1);
           }
         `}
+        ${(props) =>
+          props.interest &&
+          css`
+            background: rgba(254, 254, 254, 1);
+            border: 1px solid rgba(20, 20, 20, 0.1);
+            border-radius: 50%;
+            box-shadow: none;
+            width: 4rem;
+            height: 4rem;
+            font-size: 2rem;
+            font-weight: 900;
+            color: rgba(50, 50, 50, 0.7);
+            margin-right: 0;
+          `}}
 `;
 
 function Button({ ...rest }) {

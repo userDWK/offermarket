@@ -11,7 +11,7 @@ function PurchasePage() {
       <MainHeader />
 
       <Routes>
-        <Route path="" element={<PurchageMain />} />
+        <Route path="/*" element={<PurchageMain />} />
         <Route path="resist" element={<PurchaseResistPage />} />
       </Routes>
 

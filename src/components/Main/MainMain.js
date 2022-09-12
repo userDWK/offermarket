@@ -42,7 +42,7 @@ const MainMain = () => {
             <div className="mainSell">
               <h2>판매 상품</h2>
 
-              <Link to="/sell">
+              <Link to="/sell/pageNum=1">
                 <Button sell>판매 상품보기</Button>
               </Link>
             </div>
@@ -54,7 +54,7 @@ const MainMain = () => {
             </ProductBox>
             <div className="mainSell">
               <h2>구매 상품</h2>
-              <Link to="/purchase">
+              <Link to="/purchase/pageNum=1">
                 <Button purchase>구매 상품보기</Button>
               </Link>
             </div>

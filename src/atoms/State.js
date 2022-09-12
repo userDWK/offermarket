@@ -80,3 +80,13 @@ export const DisPurchasePage = atom({
   key: "disPurchasePage",
   default: 1,
 });
+
+export const PageLine = atom({
+  key: "pageLine",
+  default: 1,
+});
+
+export const SelectProduct = atom({
+  key: "selectProduct",
+  default: {},
+});

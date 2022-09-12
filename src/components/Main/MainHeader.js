@@ -13,7 +13,6 @@ function MainHeader() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(IsLoggedIn);
   const [userObj, setUserObj] = useRecoilState(UserObj);
   const [isModal, setIsModal] = useRecoilState(IsModal);
-  const [disPage,setDisPage] = useRecoilState(DisPage);
 
   const navigate = useNavigate();
   const handleText = (e) => {
@@ -32,9 +31,7 @@ function MainHeader() {
       setIsModal(true);
     }
   };
-  const resetPage = (e) => {
-    setDisPage()
-  }
+
   return (
     <div className="mainHeader">
       <Modal
@@ -49,7 +46,7 @@ function MainHeader() {
       <Header>
         <div className="mainLeft">
           <Link to="/">
-            <img src={Logo} alt="headerLogo" width="180" onClick={resetPage} />
+            <img src={Logo} alt="headerLogo" width="180" />
           </Link>
         </div>
         <div className="mainCenter">
