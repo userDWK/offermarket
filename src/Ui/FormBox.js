@@ -111,13 +111,30 @@ const FormDiv = styled.div`
     ${(props) =>
     props.className === "profile" &&
     css`
-      height: 43rem;
-      p {
-        font-size: 1.25rem;
-        margin: 2.5rem 0;
+      display: flex;
+      width: 80%;
+      height: 100%;
+      border: none;
+      .information {
+        width: 30%;
+        height: 37rem;
+        border-right: 1px solid rgba(50, 50, 50, 0.2);
+        padding-right: 2rem;
+        p {
+          font-size: 1.25rem;
+          margin: 2.5rem 0;
+        }
+        button:nth-child(4) {
+          width: 100%;
+        }
+        button:nth-child(6) {
+          position: relative;
+          width: 100%;
+        }
       }
-      button:nth-child(4) {
-        width: 100%;
+      .product {
+        margin-left: 10rem;
+        flex: 1;
       }
     `}
 
@@ -147,7 +164,7 @@ const FormDiv = styled.div`
             // align-items: center;
           }
           .priceBox {
-            margin-bottom : 2rem;
+            margin : 1.5rem 0;
             p {
               font-size: 1.25rem;
               span {
@@ -176,7 +193,7 @@ const FormDiv = styled.div`
           .shipBox {
             margin : 1.5rem 0;
           }
-          .sellerBox {
+          .tradeBox {
             margin : 1.5rem 0;
           }
           .purchaseBox {

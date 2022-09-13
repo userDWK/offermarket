@@ -7,6 +7,7 @@ import Button from "../../../Ui/Button";
 import { useRecoilState } from "recoil";
 import { IsLoggedIn, IsModal, Message, UserObj } from "../../../atoms/State";
 import Modal from "../../../Ui/Modal";
+import MySellProduct from "./MySellProduct";
 function ProfileMain() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(IsLoggedIn);
   const [message, SetMessage] = useRecoilState(Message);
@@ -56,35 +57,41 @@ function ProfileMain() {
         }}
       ></Modal>
       <FormBox className="profile">
-        <h3>Modify information</h3>
-        <form onSubmit={handleLogin}>
-          <p>
-            {" "}
-            이름 <br />
-            <strong>{userObj.name}</strong>
-          </p>
-          <p>
-            {" "}
-            이메일 <br /> <strong> {userObj.email}</strong>
-          </p>
-          <p>
-            {" "}
-            연락처 <br /> <strong>{userObj.phone} </strong>
-          </p>
-          <Button>비밀번호 변경(이메일 전송)</Button>
-          <TextForm
-            type="text"
-            id="address"
-            name="address"
-            value={address}
-            placeholder="주소"
-            onChange={handleText}
-            text="변경할 배송지를 입력하세요"
-          />
-          <Button type="submit" resist>
-            수정하기
-          </Button>
-        </form>
+        <div className="information">
+          <h3>Modify information</h3>
+          <form onSubmit={handleLogin}>
+            <p>
+              {" "}
+              이름 <br />
+              <strong>{userObj.name}</strong>
+            </p>
+            <p>
+              {" "}
+              이메일 <br /> <strong> {userObj.email}</strong>
+            </p>
+            <p>
+              {" "}
+              연락처 <br /> <strong>{userObj.phone} </strong>
+            </p>
+            <Button>비밀번호 변경(이메일 전송)</Button>
+            <TextForm
+              type="text"
+              id="address"
+              name="address"
+              value={address}
+              placeholder="주소"
+              onChange={handleText}
+              text="변경할 배송지를 입력하세요"
+            />
+            <Button type="submit" resist>
+              수정하기
+            </Button>
+          </form>
+        </div>
+        <div className="product">
+          <h2>상품</h2>
+          <MySellProduct />
+        </div>
       </FormBox>
     </>
   );

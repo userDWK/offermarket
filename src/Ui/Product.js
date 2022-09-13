@@ -105,9 +105,13 @@ function Product({ ...rest }) {
     <Link
       to={
         sellData.length && purchaseData.length
-          ? `/sell/product/uid=${sellData[handleDis()].uid}/date=${
-              sellData[handleDis()].resistDate
-            }`
+          ? rest.className === "sell"
+            ? `/sell/product/uid=${sellData[handleDis()].uid}/date=${
+                sellData[handleDis()].resistDate
+              }`
+            : `/purchase/product/uid=${purchaseData[handleDis()].uid}/date=${
+                purchaseData[handleDis()].resistDate
+              }`
           : "/"
       }
     >
@@ -120,8 +124,7 @@ function Product({ ...rest }) {
               purchaseData.length && (
               <Product_Purchase handleDis={handleDis} {...rest} />
             )}
-      </ProductForm>
-      //{" "}
+      </ProductForm>{" "}
     </Link>
   );
 }

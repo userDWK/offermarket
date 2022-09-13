@@ -4,10 +4,9 @@ import { SelectProduct } from "../../atoms/State";
 import Button from "../../Ui/Button";
 import FormBox from "../../Ui/FormBox";
 
-const SellProduct = () => {
+const PurchaseProduct = () => {
   const [selectProduct, setSelectProduct] = useRecoilState(SelectProduct);
   const [cnt, setCnt] = useState(1);
-
   const handleAmount = (e) => {
     setCnt((cnt) => ++cnt);
   };
@@ -26,17 +25,8 @@ const SellProduct = () => {
           </div>
           <hr />
           <div className="priceBox">
-            <p>
-              {Math.floor(
-                100 - (selectProduct.sellPrice / selectProduct.salePrice) * 100
-              )}
-              %{" "}
-              <span>
-                {parseInt(selectProduct.salePrice).toLocaleString()}원
-              </span>
-            </p>
             <strong>
-              {parseInt(selectProduct.sellPrice).toLocaleString()}원
+              {parseInt(selectProduct.purchasePrice).toLocaleString()}원
             </strong>
           </div>
           <hr />
@@ -45,7 +35,7 @@ const SellProduct = () => {
           </div>
           <hr />
           <div className="tradeBox">
-            <strong>판매자 : </strong>
+            <strong>구매자 : </strong>
             <p>택배사 : </p>
           </div>
           <hr />
@@ -60,4 +50,4 @@ const SellProduct = () => {
   );
 };
 
-export default SellProduct;
+export default PurchaseProduct;
