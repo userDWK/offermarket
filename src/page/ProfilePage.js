@@ -10,9 +10,6 @@ function ProfilePage() {
     <div className="profilePage">
       <MainHeader />
       <ProfileMain />
-      {/* <Routes>
-        <Route path="profile" element={<ProfileMain />} />
-      </Routes> */}
     </div>
   );
 }

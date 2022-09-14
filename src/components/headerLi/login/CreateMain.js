@@ -108,7 +108,7 @@ function CreateMain() {
       await dbService
         .collection("users")
         .doc(userInformation.uid)
-        .set(userInformation);
+        .set({ ...userInformation, nickName: userInformation.uid });
 
       navigate("/");
     } catch (error) {

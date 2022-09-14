@@ -9,10 +9,6 @@ import { SellItem } from "../../atoms/State";
 import { useRecoilState } from "recoil";
 
 const SellResist = ({ handleProduct, productImg, setProductImg }) => {
-  // const [category, setCategory] = useState("");
-  // const [productName, setProductName] = useState("");
-  // const [beforeSalePrice, setBeforeSalePrice] = useState(0);
-  // const [realSellPrice, setRealSellPrice] = useState(0);
   const [toggle, setToggle] = useState(false);
   const [sellItem, setSellItem] = useRecoilState(SellItem);
 

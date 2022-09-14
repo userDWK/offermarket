@@ -117,17 +117,16 @@ const FormDiv = styled.div`
       border: none;
       .information {
         width: 30%;
-        height: 37rem;
         border-right: 1px solid rgba(50, 50, 50, 0.2);
         padding-right: 2rem;
         p {
           font-size: 1.25rem;
           margin: 2.5rem 0;
         }
-        button:nth-child(4) {
+        button {
           width: 100%;
         }
-        button:nth-child(6) {
+        .modify {
           position: relative;
           width: 100%;
         }
@@ -219,17 +218,6 @@ const FormDiv = styled.div`
               margin-right : -0.15rem;
               outline : 1px solid rgba(50,50,50,0.2);
               outline-right : 0;
-              // &::after {
-              //   // position : absolute;
-              //   // top : 0%;
-              //   // left : 0;
-              //   content : "";
-              //   display : block;
-              //   background : red;
-              //   width : 10px;
-              //   height : 10px;
-
-              // }
             }
             button {
               margin-right: 0;
@@ -254,6 +242,46 @@ const FormDiv = styled.div`
                 }
               }
             }
+          }
+        }
+      }
+      `}
+      ${(props) =>
+    props.className === "myProduct" &&
+    css`
+      width: 50rem;
+      height: auto;
+      border-radius: 6px;
+      border-style : solid;
+      border : 1px solid #111;
+      table {
+        width: 46rem;
+        text-align: left;
+        border : 1px solid rgba(20,20,20,0.2);
+        border-collapse : collapse;
+        caption {
+          font-size : 1.25rem;
+          color : tomato;
+          font-weight : bold;
+          padding : 1rem 0;
+        }
+        
+
+        th,td {
+          padding : 0.25rem 1rem;
+          border : 1px solid rgba(20,20,20,0.2);
+          
+          &:first-child {
+            width: 5rem;
+            text-align : center;
+            }
+
+            &:last-child {
+              width : 7rem;
+            }
+          }
+          th {
+            text-align : center;
           }
         }
       }

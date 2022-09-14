@@ -55,7 +55,6 @@ const Products = () => {
       }
     }
   };
-  // console.log(pageLine);
   return (
     <div className="purchageMain">
       <Main>
@@ -64,12 +63,6 @@ const Products = () => {
             <h2>최신 등록 상품</h2>
           </div>
           <ProductBox className="productPage">
-            {/* {location.pathname.slice(1) === "sell" ? sellData.map((data,index)=>{
-              if(!index%8) <PurchageMain pageNum={Math.floor(index/8)}
-            })
-            
-            : "purchase"} */}
-
             <Product
               className={
                 location.pathname.slice(1, 5) === "sell" ? "sell" : "purchase"
