@@ -32,6 +32,7 @@ const TextLabel = styled.label`
   font-weight: bold;
   color: #111;
   opacity: 0.8;
+  text-align: left;
 
   ${(props) =>
     props.htmlFor === "productImage" &&

@@ -11,6 +11,7 @@ const InformationForm = styled.div`
   border: 1px solid rgba(50, 50, 50, 0.5);
   border-radius: 8px;
   background: white;
+  z-index: 0;
 
   ${(props) =>
     !props.toggle &&
@@ -21,10 +22,9 @@ const InformationForm = styled.div`
 
 function ProductInformation(props) {
   return (
-    <InformationForm
-      toggle={props.toggle}
-      view={props.className}
-    ></InformationForm>
+    <InformationForm toggle={props.toggle} view={props.className}>
+      {props.children}
+    </InformationForm>
   );
 }
 

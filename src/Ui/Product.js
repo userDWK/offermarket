@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled, { css } from "styled-components";
@@ -70,7 +70,14 @@ const ProductForm = styled.div`
       margin: 0.5rem 0 1.5rem;
       font-weight: bold;
     }
+    
   }
+  .etcBox {
+    margin : 5rem 0;
+  }
+
+
+
 `;
 
 function Product({ ...rest }) {
@@ -81,7 +88,7 @@ function Product({ ...rest }) {
   const [pageLine, setPageLine] = useRecoilState(PageLine);
   const [userObj, setUserObj] = useRecoilState(UserObj);
   const [selectProduct, setSelectProduct] = useRecoilState(SelectProduct);
-
+  const [pageUrl, setPageUrl] = useState("/");
   const location = useLocation();
   useEffect(() => {
     if (location.pathname === "/") {
@@ -89,32 +96,29 @@ function Product({ ...rest }) {
       setDisPurchasePage(1);
       setPageLine(1);
     }
+    setPageUrl(
+      rest.className === "sell"
+        ? sellData.length > handleDis() &&
+            `/sell/product/uid=${sellData[handleDis()].uid}/date=${
+              sellData[handleDis()].resistDate
+            }`
+        : purchaseData.length > handleDis() &&
+            `/purchase/product/uid=${purchaseData[handleDis()].uid}/date=${
+              purchaseData[handleDis()].resistDate
+            }`
+    );
   }, [location]);
-
   const handleProduct = (e) => {
     if (e.currentTarget.className.includes("sell")) {
       setSelectProduct(sellData[handleDis()]);
     } else if (e.currentTarget.className.includes("purchase"))
       setSelectProduct(purchaseData[handleDis()]);
   };
-
   const handleDis = () => {
     return +rest.num + (disSellPage - 1) * 8;
   };
   return (
-    <Link
-      to={
-        sellData.length && purchaseData.length
-          ? rest.className === "sell"
-            ? `/sell/product/uid=${sellData[handleDis()].uid}/date=${
-                sellData[handleDis()].resistDate
-              }`
-            : `/purchase/product/uid=${purchaseData[handleDis()].uid}/date=${
-                purchaseData[handleDis()].resistDate
-              }`
-          : "/"
-      }
-    >
+    <Link to={pageUrl}>
       <ProductForm className={rest.className} onClick={handleProduct}>
         {rest.className === "sell"
           ? +rest.num + 1 + (disSellPage - 1) * 8 <= sellData.length && (

@@ -41,12 +41,16 @@ const SellProduct = () => {
           </div>
           <hr />
           <div className="shipBox">
-            <p>배송비 : </p>
+            <p>배송비 : {selectProduct.parcelPrice}</p>
           </div>
           <hr />
           <div className="tradeBox">
-            <strong>판매자 : </strong>
-            <p>택배사 : </p>
+            <strong>판매자 : {selectProduct.seller}</strong>
+            <p>택배사 : {selectProduct.courier}</p>
+          </div>
+          <hr />
+          <div className="etcBox">
+            <strong>기타 상세 정보 : {selectProduct.etc}</strong>
           </div>
           <hr />
           <div className="purchaseBox">

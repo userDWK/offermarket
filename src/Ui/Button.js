@@ -40,8 +40,16 @@ const ButtonForm = styled.button`
         color: #111;
         text-align: center;
         font-size: 1rem;
-      `}
 
+        ${(props) =>
+          !props.toggle &&
+          css`
+            &:last-child {
+              display: none;
+            }
+          `}
+      `}
+  
       ${(props) =>
         props.product &&
         css`
@@ -77,10 +85,18 @@ const ButtonForm = styled.button`
             color: rgba(50, 50, 50, 0.7);
             margin-right: 0;
           `}}
+
+
 `;
 
 function Button({ ...rest }) {
-  return <ButtonForm onClick={rest.onclick} {...rest}></ButtonForm>;
+  return (
+    <ButtonForm
+      onClick={rest.onclick}
+      toggle={rest.toggle}
+      {...rest}
+    ></ButtonForm>
+  );
 }
 
 export default Button;

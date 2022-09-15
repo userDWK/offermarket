@@ -86,7 +86,7 @@ function CreateMain() {
       setIsModal(true);
       return;
     }
-    if (!/^\d{3}-\d{3,4}-\d{4}$/.test(phone)) {
+    if (!/(^\d{3})(\d{3,4})(\d{4}$)/.test(phone)) {
       SetMessage({
         type: "Error",
         message: "휴대폰 번호를 정확히 입력해 주십시오",
@@ -108,7 +108,7 @@ function CreateMain() {
       await dbService
         .collection("users")
         .doc(userInformation.uid)
-        .set({ ...userInformation, nickName: userInformation.uid });
+        .set({ ...userInformation, nick: userInformation.uid });
 
       navigate("/");
     } catch (error) {

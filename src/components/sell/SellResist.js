@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Button from "../../Ui/Button";
 import FormBox from "../../Ui/FormBox";
-import ProductInformation from "../../Ui/ProductInformation";
 import Selector from "../../Ui/Selector";
 import TextForm from "../../Ui/TextForm";
 import empty from "../../images/productImg/empty.png";
@@ -87,11 +86,38 @@ const SellResist = ({ handleProduct, productImg, setProductImg }) => {
           </div>
           <div className="informationBox">
             <Button product onclick={handleInfo}>
-              상품 상세 정보 <span>v</span>
-              <ProductInformation toggle={toggle}></ProductInformation>
+              기타 상세 정보 <span>v</span>
             </Button>
+            <FormBox className="etc" toggle={toggle}>
+              <TextForm
+                type="text"
+                onChange={handleData}
+                id="seller"
+                name="seller"
+                placeholder="판매자(사업소재지)"
+                text="판매자(사업소재지) : "
+              />
+              <TextForm
+                type="택배사"
+                onChange={handleData}
+                id="courier"
+                name="courier"
+                placeholder="택배사"
+                text="택배사 : "
+              />
+              <TextForm
+                type="number"
+                onChange={handleData}
+                id="parcelPrice"
+                name="parcelPrice"
+                placeholder="배송비"
+                text="배송비 : "
+              />
+              <label htmlFor="etc">기타 정보</label>
+              <textarea onChange={handleData} name="etc" id="etc" />
+            </FormBox>
           </div>
-          <Button type="submit" resist>
+          <Button type="submit" resist toggle={toggle}>
             상품 판매 등록
           </Button>
         </form>

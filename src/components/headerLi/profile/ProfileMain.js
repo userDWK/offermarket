@@ -36,7 +36,7 @@ function ProfileMain() {
       return;
     }
     if (
-      /^[0-9a-zA-Z가-힣]/g.test(nick) ||
+      /[^0-9a-zA-Z가-힣]/g.test(nick) ||
       nick.length < 2 ||
       nick.length > 15
     ) {

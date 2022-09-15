@@ -47,6 +47,7 @@ const FormDiv = styled.div`
       }
     }
   }
+
   ${(props) =>
     props.className === "trade" &&
     css`
@@ -160,7 +161,6 @@ const FormDiv = styled.div`
           .textHeader {
             display: flex;
             justify-content: space-between;
-            // align-items: center;
           }
           .priceBox {
             margin : 1.5rem 0;
@@ -194,6 +194,9 @@ const FormDiv = styled.div`
           }
           .tradeBox {
             margin : 1.5rem 0;
+          }
+          .etcBox {
+            margin : 2rem 0;
           }
           .purchaseBox {
             display: flex;
@@ -252,44 +255,115 @@ const FormDiv = styled.div`
       width: 50rem;
       height: auto;
       border-radius: 6px;
-      border-style : solid;
-      border : 1px solid #111;
+      border-style: solid;
+      border: 1px solid #111;
       table {
         width: 46rem;
         text-align: left;
-        border : 1px solid rgba(20,20,20,0.2);
-        border-collapse : collapse;
+        border: 1px solid rgba(20, 20, 20, 0.2);
+        border-collapse: collapse;
         caption {
-          font-size : 1.25rem;
-          color : tomato;
-          font-weight : bold;
-          padding : 1rem 0;
+          font-size: 1.25rem;
+          color: tomato;
+          font-weight: bold;
+          padding: 1rem 0;
         }
-        
 
-        th,td {
-          padding : 0.25rem 1rem;
-          border : 1px solid rgba(20,20,20,0.2);
-          
+        tr {
+          position: relative;
+          border: 1px solid rgba(50, 50, 50, 0.1);
+        }
+
+        th,
+        td {
+          padding: 0.25rem 1rem;
           &:first-child {
-            width: 5rem;
-            text-align : center;
-            }
+            width: 6rem;
+            text-align: center;
+            
 
+            button {
+              background : transparent;
+              border : none;
+              font-size : 1rem;
+              font-weight : bold;
+              color : transparent;
+              cursor : pointer;
+
+              
+            &:hover {
+              &:first-child {
+                text-shadow : 0 0 2px rgba(255,50,50,1);
+                color : red;
+                }
+                &:last-child {
+                  text-shadow : 0 0 2px rgba(50,50,255,1);
+                  color : blue;
+                }
+            } 
+            }
+          }
+        
+            &:nth-child(2) {
+              width: 5rem;
+              text-align: center;
+            }
+            &:nth-child(3) {
+              width: 30rem;
+              text-align: center;
+              cursor : pointer;
+              &:hover {
+                color : blue;
+                font-weight : bold;
+              }
+            }
             &:last-child {
-              width : 7rem;
+              width: 7rem;
             }
           }
           th {
-            text-align : center;
+            text-align: center;
           }
         }
       }
     `}
+    .etc {
+    margin: -1.5rem 0;
+    width: 100%;
+    height: 37rem;
+    background: white;
+    z-index: 1;
+
+    label {
+      display: block;
+      height: 1rem;
+      margin: 3rem 0 0.5rem;
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: #111;
+      opacity: 0.8;
+      text-align: left;
+    }
+    textarea {
+      margin: 0;
+      resize: none;
+      width: 100%;
+      height: 7rem;
+    }
+  }
+  ${(props) =>
+    props.toggle &&
+    css`
+      display: none;
+    `}
 `;
 
 function FormBox(props) {
-  return <FormDiv className={props.className}>{props.children}</FormDiv>;
+  return (
+    <FormDiv className={props.className} toggle={props.toggle}>
+      {props.children}
+    </FormDiv>
+  );
 }
 
 export default FormBox;
