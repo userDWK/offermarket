@@ -29,38 +29,29 @@ const ButtonForm = styled.button`
     ${(props) =>
       props.resist &&
       css`
-        position: absolute;
-        bottom: 5%;
+        position: relative;
         left: 50%;
         transform: translate(-50%);
         width: 90%;
         height: 2.5rem;
         background: orange;
-        margin: 4rem auto 2rem;
+        margin: 0 auto 2rem;
         color: #111;
         text-align: center;
         font-size: 1rem;
-
-        ${(props) =>
-          !props.toggle &&
-          css`
-            &:last-child {
-              display: none;
-            }
-          `}
       `}
   
       ${(props) =>
         props.product &&
         css`
-          position: absolute;
-          bottom: 18%;
+          position: relative;
           left: 50%;
           transform: translate(-50%);
           font-size: 1rem;
           font-weight: 300;
           width: 90%;
           height: 2.25rem;
+          margin-bottom: 3rem;
           background: rgba(50, 50, 50, 0.1);
           box-shadow: none;
           line-height: 180%;

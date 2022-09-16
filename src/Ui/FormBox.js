@@ -52,7 +52,7 @@ const FormDiv = styled.div`
     props.className === "trade" &&
     css`
       width: 35rem;
-      height: 65rem;
+      height : 100%;
 
       .productPrice {
         width: 100%;
@@ -94,6 +94,26 @@ const FormDiv = styled.div`
         select {
           width: 100%;
           padding: 1rem 0;
+        }
+      }
+      .bundleBox {
+        .bundleCntBox{
+        display : flex;
+        justify-content: space-between;
+        margin : 0 0 5rem 1.5rem;
+        
+        align-items : center;
+        width : 100%;
+
+        input {
+          width : 90%;
+        }
+
+        button {
+          width : 20%;
+          margin-top : 5rem;
+         height :2.25rem; 
+        }
         }
       }
     `}
@@ -249,6 +269,35 @@ const FormDiv = styled.div`
         }
       }
       `}
+
+      ${(props) =>
+    props.className === "bundle" &&
+    css`
+      position: relative;
+      left: -50%;
+      width: 200%;
+      height: 100%;
+      margin-top: -2rem;
+      background : rgba(225,250,255,1);
+      border-radius : 1rem;
+      z-index : 3;
+      > div {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin-top : 2rem;
+        border : 1px solid rgba(20,20,20,0.2);
+
+        > div {
+          margin : 2rem 0 2rem;
+          width 30%;
+          input {
+          background : white;
+          }
+        }
+      }
+    `}
+
       ${(props) =>
     props.className === "myProduct" &&
     css`
@@ -328,11 +377,12 @@ const FormDiv = styled.div`
       }
     `}
     .etc {
-    margin: -1.5rem 0;
     width: 100%;
     height: 37rem;
-    background: white;
+    background: rgba(225, 250, 255, 1);
+    border-radius: 1rem;
     z-index: 1;
+    margin-top: -2rem;
 
     label {
       display: block;
@@ -344,6 +394,9 @@ const FormDiv = styled.div`
       opacity: 0.8;
       text-align: left;
     }
+    input {
+      background: white;
+    }
     textarea {
       margin: 0;
       resize: none;
@@ -352,7 +405,12 @@ const FormDiv = styled.div`
     }
   }
   ${(props) =>
-    props.toggle &&
+    props.etcToggle === false &&
+    css`
+      display: none;
+    `}
+  ${(props) =>
+    props.bundleToggle === false &&
     css`
       display: none;
     `}
@@ -360,7 +418,11 @@ const FormDiv = styled.div`
 
 function FormBox(props) {
   return (
-    <FormDiv className={props.className} toggle={props.toggle}>
+    <FormDiv
+      className={props.className}
+      etcToggle={props.etcToggle}
+      bundleToggle={props.bundleToggle}
+    >
       {props.children}
     </FormDiv>
   );

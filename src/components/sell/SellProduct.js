@@ -50,7 +50,10 @@ const SellProduct = () => {
           </div>
           <hr />
           <div className="etcBox">
-            <strong>기타 상세 정보 : {selectProduct.etc}</strong>
+            <strong>
+              기타 상세 정보 : <br />
+              <br /> {selectProduct.etc}
+            </strong>
           </div>
           <hr />
           <div className="purchaseBox">

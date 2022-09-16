@@ -6,11 +6,14 @@ import TextForm from "../../Ui/TextForm";
 import empty from "../../images/productImg/empty.png";
 import { SellItem } from "../../atoms/State";
 import { useRecoilState } from "recoil";
+import { v4 as uuidv4 } from "uuid";
 
 const SellResist = ({ handleProduct, productImg, setProductImg }) => {
-  const [toggle, setToggle] = useState(false);
+  const [etcToggle, setEtcToggle] = useState(false);
+  const [bundleToggle, setBundleToggle] = useState(false);
   const [sellItem, setSellItem] = useRecoilState(SellItem);
-
+  const [bundleCnt, setBundleCnt] = useState(1);
+  const [addArr, setAddArr] = useState([]);
   const handleImg = async (e) => {
     const file = e.target.files[0];
     if (!file.type.startsWith("image/")) return;
@@ -28,9 +31,39 @@ const SellResist = ({ handleProduct, productImg, setProductImg }) => {
     });
   };
 
-  const handleInfo = (e) => {
+  const handleToggle = (e) => {
     e.preventDefault();
-    setToggle((prev) => !prev);
+    const name = e.target.name;
+    if (name === "etc") setEtcToggle((prev) => !prev);
+    else if (name === "bundle") setBundleToggle((prev) => !prev);
+  };
+
+  const handleBundle = (e) => {
+    e.preventDefault();
+    const {
+      target: { name, id, value },
+    } = e;
+    if (name === "bundleCnt") {
+      return setBundleCnt(value);
+    }
+    let data = addArr;
+    if (name === "capacity") {
+      data[+id] = { ...data[+id], capicity: value };
+    } else if (name === "amount") {
+      data[+id] = { ...data[+id], amount: value };
+    } else if (name === "price") {
+      data[+id] = { ...data[+id], price: value };
+    }
+    setAddArr(data);
+  };
+  const addSelect = (e) => {
+    e.preventDefault();
+    const arr = new Array(parseInt(bundleCnt)).fill({
+      capicity: "",
+      amount: "",
+      price: "",
+    });
+    setAddArr(arr);
   };
 
   return (
@@ -85,10 +118,15 @@ const SellResist = ({ handleProduct, productImg, setProductImg }) => {
             </figure>
           </div>
           <div className="informationBox">
-            <Button product onclick={handleInfo}>
+            <Button
+              product
+              name="etc"
+              onclick={handleToggle}
+              bundleToggle={bundleToggle}
+            >
               기타 상세 정보 <span>v</span>
             </Button>
-            <FormBox className="etc" toggle={toggle}>
+            <FormBox className="etc" etcToggle={etcToggle}>
               <TextForm
                 type="text"
                 onChange={handleData}
@@ -117,7 +155,60 @@ const SellResist = ({ handleProduct, productImg, setProductImg }) => {
               <textarea onChange={handleData} name="etc" id="etc" />
             </FormBox>
           </div>
-          <Button type="submit" resist toggle={toggle}>
+          <div className="bundleBox">
+            <div className="bundleCntBox">
+              <TextForm
+                type="number"
+                value={bundleCnt}
+                onChange={handleBundle}
+                id="bundleCnt"
+                name="bundleCnt"
+                placeholder="상품 번들 수"
+                text="추가 할 상품 번들의 수를 입력하세요."
+              />
+              <Button onclick={addSelect}>추가</Button>
+            </div>
+            <Button product name="bundle" onclick={handleToggle}>
+              상품 묶음 판매 정보 <span>v</span>
+            </Button>
+            <FormBox className="bundle" bundleToggle={bundleToggle}>
+              {addArr.map((select, index) => {
+                return (
+                  <div key={uuidv4()}>
+                    <TextForm
+                      type="number"
+                      value={addArr[index]}
+                      onChange={handleBundle}
+                      id={index}
+                      name="capacity"
+                      placeholder="용량"
+                      text="추가 할 상품 용량을 입력하세요."
+                    />
+                    <TextForm
+                      type="number"
+                      value={addArr[index]}
+                      onChange={handleBundle}
+                      id={index}
+                      name="amount"
+                      placeholder="개수"
+                      text="추가 할 상품 개수를 입력하세요."
+                    />
+                    <TextForm
+                      type="number"
+                      value={addArr[index]}
+                      onChange={handleBundle}
+                      id={index}
+                      name="price"
+                      placeholder="가격"
+                      text="추가 할 번들의 가격을 입력하세요."
+                    />
+                  </div>
+                );
+              })}
+            </FormBox>
+          </div>
+
+          <Button type="submit" resist etcToggle={etcToggle}>
             상품 판매 등록
           </Button>
         </form>
