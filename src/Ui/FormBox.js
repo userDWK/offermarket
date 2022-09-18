@@ -3,11 +3,11 @@ import styled, { css } from "styled-components";
 
 const FormDiv = styled.div`
   width: 25rem;
-  height: 32rem;
+  height: 100%;
   margin: 5rem auto;
   border: 2px solid rgba(50, 50, 50, 0.2);
   border-radius: 3px;
-  padding: 0.5rem 2rem 2rem;
+  padding: 0.5rem 2rem 1.5rem;
   position: relative;
 
   h3 {
@@ -29,11 +29,10 @@ const FormDiv = styled.div`
   }
 
   .formFootBox {
-    margin-top: 2.25rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.35rem 0.25rem;
+    padding: 1.5rem 0.25rem 0;
     border-top: 1px solid rgba(50, 50, 50, 0.2);
 
     .socialLogin {
@@ -76,8 +75,29 @@ const FormDiv = styled.div`
       
 
       .productImg {
-       
+        position : relative;
+        input {
+          opacity : 0;
+        }
+       label {
+        position : absolute;
+        top : -9%;
+        width : 10rem;
+        text-align : center;
+        line-height : 0;
+        padding : 1.5rem 0;
+        border-radius : 10px;
+        background : rgba(240,150,240,1);
+        cursor : pointer;
+        z-index : 100;
+
+        &:hover {
+          background : rgba(230,140,230,1);
+          box-shadow : 0 0 4px rgba(100,100,150,1);
+        }
+       }
         figure {
+          position : relative;
           text-align: center;
           margin-top: 2rem;
        
@@ -87,7 +107,12 @@ const FormDiv = styled.div`
             min-height: 12rem;
             max-height: 15rem;
           }
+
+          .hide {
+            display : none;
+          }
         }
+        
       }
 
       .selectBox {
@@ -126,41 +151,88 @@ const FormDiv = styled.div`
   ${(props) =>
     props.className === "create" &&
     css`
-      height: 57rem;
-    `}
-
-    ${(props) =>
-    props.className === "profile" &&
-    css`
-      display: flex;
-      width: 80%;
       height: 100%;
-      border: none;
-      .information {
-        width: 30%;
-        border-right: 1px solid rgba(50, 50, 50, 0.2);
-        padding-right: 2rem;
-        p {
-          font-size: 1.25rem;
-          margin: 2.5rem 0;
-        }
-        button {
-          width: 100%;
-        }
-        .modify {
-          position: relative;
-          width: 100%;
-        }
-      }
-      .product {
-        margin-left: 10rem;
-        flex: 1;
-      }
     `}
 
+    .postBox {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%);
+      width: 100vw;
+      min-height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      opacity : 1;
+      transition : opacity 0.4s ease-in-out; !important;
+      z-index : 1;
+      div {
+        width: 50%;
+        height : 100%;
+        position: relative;
+        top: 100%;
+        left: 50%;
+        transform: translate(-50%);
+
+        .closeBtn {
+          width : 2rem;
+          height : 2rem;
+          position : fixed;
+          top : 90%;
+          right : 20%;
+          font-weight : bold;
+          font-size : 1.25rem;
+          background : white;
+          border-radius : 50%;
+          padding : 0.25rem 0.5rem;
+          border : none;
+          cursor : pointer;
+          line-height : 90%;
+        }
+
+        .postmodal div {
+          min-height: 40vh;
+        }
+      }
+      
+    }
+    .hide {
+      width : 0;
+      height : 0;
+      opacity : 0;
+      // display : none;
+    }
     ${(props) =>
-    props.className === "product" &&
-    css`
+      props.className === "profile" &&
+      css`
+        display: flex;
+        width: 80%;
+        height: 100%;
+        border: none;
+        .information {
+          width: 30%;
+          border-right: 1px solid rgba(50, 50, 50, 0.2);
+          padding-right: 2rem;
+          p {
+            font-size: 1.25rem;
+            margin: 2.5rem 0;
+          }
+          button {
+            width: 100%;
+          }
+          .modify {
+            position: relative;
+            width: 100%;
+          }
+        }
+        .product {
+          margin-left: 10rem;
+          flex: 1;
+        }
+      `}
+
+    ${(props) =>
+      props.className === "product" &&
+      css`
       width: 60%;
       height: 100%;
       border : none;
@@ -181,6 +253,10 @@ const FormDiv = styled.div`
           .textHeader {
             display: flex;
             justify-content: space-between;
+            align-items : center;
+            h2 {
+              width : 90%;
+            }
           }
           .priceBox {
             margin : 1.5rem 0;
@@ -218,6 +294,57 @@ const FormDiv = styled.div`
           .etcBox {
             margin : 2rem 0;
           }
+          .bundleSelectBox {
+            
+          button {
+            width : 100%;
+            height : 100%;
+            padding : 1.75rem 2rem 1rem;
+            display : flex;
+            justify-content : space-between;
+            align-items : center;
+            span {
+              font-size : 0.9rem;
+            }
+            div p {
+              font-size : 1.25rem;
+              strong {
+                font-size: 1.5rem;
+                color: #ae0000;
+                margin: 0.5rem 0 1.5rem;
+                font-weight: bold;
+            }
+            }
+            
+          } 
+          
+          ul {
+            width : 100%;
+            padding : 0;
+            margin-top : 0rem;
+          }
+          li {
+            border : 1px solid rgba(200,200,200,1);
+            cursor : pointer;
+            padding : 1rem 2rem;
+            font-size : 1.25rem;
+            display : none;
+            strong {
+              font-size: 1.5rem;
+              color: #ae0000;
+              margin: 0.5rem 0 1.5rem;
+              font-weight: bold;
+            }
+            &:hover {
+              background : orange;
+            }
+          } 
+          .display {
+            display : block;
+          }
+          }
+          
+          
           .purchaseBox {
             display: flex;
             justify-content: space-between;
@@ -271,8 +398,8 @@ const FormDiv = styled.div`
       `}
 
       ${(props) =>
-    props.className === "bundle" &&
-    css`
+        props.className === "bundle" &&
+        css`
       position: relative;
       left: -50%;
       width: 200%;
@@ -299,8 +426,8 @@ const FormDiv = styled.div`
     `}
 
       ${(props) =>
-    props.className === "myProduct" &&
-    css`
+        props.className === "myProduct" &&
+        css`
       width: 50rem;
       height: auto;
       border-radius: 6px;
@@ -378,7 +505,7 @@ const FormDiv = styled.div`
     `}
     .etc {
     width: 100%;
-    height: 37rem;
+    height: 100%;
     background: rgba(225, 250, 255, 1);
     border-radius: 1rem;
     z-index: 1;
@@ -414,6 +541,66 @@ const FormDiv = styled.div`
     css`
       display: none;
     `}
+
+    ${(props) =>
+      props.className === "interest" &&
+      css`
+        width: 70%;
+        border: none;
+
+        h2 {
+          font-size: 1.75rem;
+          margin-bottom: 4rem;
+          text-align: center;
+        }
+        > hr {
+          margin: 0;
+        }
+        .interestBox {
+          display: flex;
+          flex-wrap: wrap;
+          flex-direction: column;
+          align-items: center;
+
+          h3 {
+            width: 100%;
+            margin: 0;
+            padding: 2rem 3rem;
+            color: #111;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-bottom: 1px solid orange;
+          }
+
+          div {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 4rem;
+            border-bottom: 1px solid rgba(230, 230, 230, 1);
+
+            img {
+              width: 10rem;
+              height: 10rem;
+              padding: 1rem 0;
+            }
+            a {
+              flex: 1;
+              margin-left: 4rem;
+              color: #111;
+              &:hover {
+                color: red;
+                font-weight: 600;
+              }
+              p {
+                font-size: 1rem;
+                padding: 1rem 0;
+              }
+            }
+          }
+        }
+      `}
 `;
 
 function FormBox(props) {

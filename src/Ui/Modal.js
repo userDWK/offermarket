@@ -16,6 +16,7 @@ const ModalBox = styled.div`
   opacity : 0;
   transition : opacity 0.4s ease-in-out; !important;
   pointer-events : none;
+  overflow: hidden;
 
   ${(props) =>
     props.show &&
@@ -78,7 +79,6 @@ const ModalForm = styled.div`
         display: none;
       }
     `}
-  overflow: hidden;
 `;
 
 const Modal = (props) => {

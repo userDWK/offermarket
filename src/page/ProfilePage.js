@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import MainHeader from "../components/Main/MainHeader";
+import MainFooter from "../components/Main/MainFooter";
 import { useRecoilState } from "recoil";
 import { IsLoggedIn } from "../atoms/State";
 import ProfileMain from "../components/headerLi/profile/ProfileMain";
@@ -10,6 +11,7 @@ function ProfilePage() {
     <div className="profilePage">
       <MainHeader />
       <ProfileMain />
+      <MainFooter />
     </div>
   );
 }

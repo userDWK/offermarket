@@ -18,6 +18,7 @@ import {
 } from "./atoms/State";
 import ProfilePage from "./page/ProfilePage";
 import { getDocs } from "firebase/firestore";
+import InterestPage from "./page/InterestPage";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(IsLoggedIn);
   const [userObj, setUserObj] = useRecoilState(UserObj);
@@ -96,6 +97,7 @@ function App() {
           <Route path="profile/*" element={<ProfilePage />} />
           <Route path="purchase/*" element={<PurchasePage />} />
           <Route path="sell/*" element={<SellPage />} />
+          <Route path="interest/*" element={<InterestPage />} />
         </Routes>
       </div>
     </Router>

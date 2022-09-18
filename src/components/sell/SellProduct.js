@@ -1,16 +1,72 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { SelectProduct } from "../../atoms/State";
 import Button from "../../Ui/Button";
 import FormBox from "../../Ui/FormBox";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
+import { v4 as uuidv4 } from "uuid";
+import { faHeart } from "@fortawesome/free-regular-svg-icons";
+import { useLocation } from "react-router-dom";
 
 const SellProduct = () => {
   const [selectProduct, setSelectProduct] = useRecoilState(SelectProduct);
   const [cnt, setCnt] = useState(1);
+  const [toggle, setToggle] = useState(false);
+  const [selectBundle, setSelectBundle] = useState({});
+  const location = useLocation();
 
   const handleAmount = (e) => {
     setCnt((cnt) => ++cnt);
   };
+
+  const bundleToggle = (e) => {
+    e.preventDefault();
+    setToggle((prev) => !prev);
+    setSelectBundle({ ...selectProduct.bundle[e.target.id] });
+  };
+
+  const handleProduct = (e) => {
+    e.preventDefault();
+    const name = e.target.name;
+    let obj = localStorage.getItem(
+      name === "cart" ? "sellCart" : "sellInterest"
+    );
+    obj = obj === null ? [] : JSON.parse(obj);
+    obj = [...obj].filter((item, idx) => item.num !== selectProduct.num);
+    if (name === "cart") {
+      obj.push({
+        ...selectBundle,
+        cnt,
+        productName: selectProduct.productName,
+        img: selectProduct.img,
+        parcelPrice: selectProduct.parcelPrice,
+        num: selectProduct.num,
+        uid: selectProduct.uid,
+        resistDate: selectProduct.resistDate,
+      });
+      localStorage.setItem("sellCart", JSON.stringify(obj));
+    } else {
+      obj.push({
+        productName: selectProduct.productName,
+        img: selectProduct.img,
+        sellPrice: selectProduct.sellPrice,
+        num: selectProduct.num,
+        uid: selectProduct.uid,
+        resistDate: selectProduct.resistDate,
+      });
+      localStorage.setItem("sellInterest", JSON.stringify(obj));
+    }
+  };
+  useEffect(() => {
+    if (location.pathname.includes("sell/product/uid=")) {
+      selectProduct.num &&
+        localStorage.setItem("product", JSON.stringify(selectProduct));
+
+      localStorage.getItem("product") &&
+        setSelectProduct(JSON.parse(localStorage.getItem("product")));
+    }
+  }, []);
   return (
     <FormBox className="product">
       <div className="productMain">
@@ -22,7 +78,9 @@ const SellProduct = () => {
         <div className="textBox">
           <div className="textHeader">
             <h2>{selectProduct.productName}</h2>
-            <Button interest>♡</Button>
+            <Button interest onClick={handleProduct} name="interest">
+              <FontAwesomeIcon icon={faHeart} />{" "}
+            </Button>
           </div>
           <hr />
           <div className="priceBox">
@@ -41,7 +99,9 @@ const SellProduct = () => {
           </div>
           <hr />
           <div className="shipBox">
-            <p>배송비 : {selectProduct.parcelPrice}</p>
+            <p>
+              배송비 : {parseInt(selectProduct.parcelPrice).toLocaleString()}원
+            </p>
           </div>
           <hr />
           <div className="tradeBox">
@@ -56,9 +116,52 @@ const SellProduct = () => {
             </strong>
           </div>
           <hr />
+          <div className="bundleSelectBox">
+            <Button onClick={bundleToggle}>
+              <div>
+                <span> 용량/크기 * 수량</span>{" "}
+                {selectBundle.capacity ? (
+                  <p>
+                    {selectBundle.capacity} * {selectBundle.amount}
+                    <br />
+                    <br />
+                    <strong>
+                      {parseInt(selectBundle.price).toLocaleString() + "원"}
+                    </strong>
+                  </p>
+                ) : (
+                  <p>구매하실 상품을 선택하세요.</p>
+                )}
+              </div>
+              {toggle ? (
+                <FontAwesomeIcon icon={faCaretUp} />
+              ) : (
+                <FontAwesomeIcon icon={faCaretDown} />
+              )}
+            </Button>
+            <ul>
+              {selectProduct.bundle &&
+                selectProduct.bundle.map((el, i) => {
+                  return (
+                    <li
+                      onClick={bundleToggle}
+                      key={uuidv4()}
+                      id={i}
+                      className={toggle ? "display".toString() : ""}
+                    >
+                      {el.amount} * {el.capacity}
+                      <br />
+                      <strong> {parseInt(el.price).toLocaleString()}원</strong>
+                    </li>
+                  );
+                })}
+            </ul>
+          </div>
           <div className="purchaseBox">
             <input type="number" value={cnt} onChange={handleAmount} />
-            <Button>관심상품 등록</Button>
+            <Button onClick={handleProduct} name="cart">
+              장바구니 등록
+            </Button>
             <Button>구매하기</Button>
           </div>
         </div>

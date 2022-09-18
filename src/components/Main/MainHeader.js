@@ -8,6 +8,13 @@ import { DisPage, IsLoggedIn, IsModal, UserObj } from "../../atoms/State";
 import Selector from "../../Ui/Selector";
 import { authService } from "../../fbase";
 import Modal from "../../Ui/Modal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowRight,
+  faCartShopping,
+} from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faUser } from "@fortawesome/free-regular-svg-icons";
+
 function MainHeader() {
   const [searchText, setSearchText] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(IsLoggedIn);
@@ -59,21 +66,30 @@ function MainHeader() {
         <div className="mainRight">
           <Nav>
             <ul>
-              <Link to="/service">
-                <li>고객센터</li>
+              <Link to="/cart">
+                <li>
+                  <FontAwesomeIcon icon={faCartShopping} size="2x" />{" "}
+                  <p>장바구니</p>
+                </li>
               </Link>
-              <Link to="/basket">
-                <li>관심상품</li>
+              <Link to="/interest">
+                <li>
+                  <FontAwesomeIcon icon={faHeart} size="2x" /> <p>관심상품</p>
+                </li>
               </Link>
               <Link to={userObj ? "/profile" : "/"}>
-                <li onClick={checkLogin}>마이페이지</li>
+                <li onClick={checkLogin}>
+                  <FontAwesomeIcon icon={faUser} size="2x" />
+                  <p>마이페이지</p>
+                </li>
               </Link>
               <Link to={userObj ? "/" : "/login"}>
                 <li
                   className={(userObj ? "login" : "").toString()}
                   onClick={userObj && handleLogout}
                 >
-                  {userObj ? "로그아웃" : "로그인"}
+                  <FontAwesomeIcon icon={faArrowRight} size="2x" />
+                  <p>{userObj ? "로그아웃" : "로그인"}</p>
                 </li>
               </Link>
             </ul>

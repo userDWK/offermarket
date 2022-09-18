@@ -42,7 +42,8 @@ li {
 }
 .mainFooter {
   position: relative;
-  margin-top: 15rem;
+  bottom: 0;
+  margin-top: 5rem;
 }
 hr {
   opacity: 0.4;

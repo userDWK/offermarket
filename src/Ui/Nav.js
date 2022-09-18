@@ -14,6 +14,11 @@ const NavForm = styled.nav`
     font-size: 1rem;
     margin-right: 2rem;
     color: black;
+    cursor: pointer;
+
+    p {
+      margin: 1rem 0 0;
+    }
   }
   li::before {
     position: absolute;

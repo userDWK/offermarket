@@ -12,6 +12,7 @@ import {
 import { dbService, storageService } from "../../fbase";
 import firebase from "firebase/compat/app";
 import PurchaseResist from "./PurchaseResist";
+import { v4 as uuidv4 } from "uuid";
 
 function PurchaseResistPage() {
   const [userObj, setUserObj] = useRecoilState(UserObj);
@@ -20,6 +21,8 @@ function PurchaseResistPage() {
   const [today, setToday] = useRecoilState(Today);
   const [isResisted, setIsResisted] = useRecoilState(IsResisted);
   const [handleTime, setHandleTime] = useRecoilState(HandleTime);
+  const [imgToggle, setImgToggle] = useState(false);
+
   const navigate = useNavigate();
 
   const handleProduct = async (e) => {
@@ -58,35 +61,34 @@ function PurchaseResistPage() {
         try {
           const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
           console.log("다운로드 URL : ", downloadURL);
-
-          await dbService.collection("purchase").doc(today).set({
-            category: purchaseItem.category,
-            uid: userObj.uid,
-            productName: purchaseItem.productName,
-            purchasePrice: purchaseItem.purchasePrice,
-            img: downloadURL,
-            resistDate: today,
-          });
+          const num = uuidv4();
+          await dbService
+            .collection("purchase")
+            .doc(today)
+            .set({
+              ...purchaseItem,
+              uid: userObj.uid,
+              img: downloadURL,
+              resistDate: today,
+              num,
+            });
 
           await dbService
             .collection("users")
             .doc(userObj.uid)
             .update({
               purchaseItems: firebase.firestore.FieldValue.arrayUnion({
-                category: purchaseItem.category,
-                productName: purchaseItem.productName,
-                purchasePrice: purchaseItem.purchasePrice,
+                ...purchaseItem,
+                uid: userObj.uid,
                 img: downloadURL,
                 resistDate: today,
+                num,
               }),
             });
 
-          setPurchaseItem({
-            productName: "",
-            purchasePrice: 0,
-            img: "",
-          });
+          setPurchaseItem({});
           setIsResisted((prev) => !prev);
+          setImgToggle(false);
         } catch (e) {
           console.error("에러가 발생 하였습니다", e);
         }
@@ -94,7 +96,6 @@ function PurchaseResistPage() {
     );
     navigate(-1);
   };
-
   const resizeImg = async () => {
     const canvas = document.getElementById("canvas");
     canvas.width = "250";
@@ -108,6 +109,7 @@ function PurchaseResistPage() {
     let x = canvas.width / 2 - (img.width / 2) * scale;
     let y = canvas.height / 2 - (img.height / 2) * scale;
     ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+    setImgToggle(true);
     return new Promise((resolve) => {
       canvas.toBlob((blob) => {
         resolve(blob);
@@ -129,6 +131,7 @@ function PurchaseResistPage() {
         handleProduct={handleProduct}
         productImg={productImg}
         setProductImg={setProductImg}
+        imgToggle={imgToggle}
       />
     </div>
   );

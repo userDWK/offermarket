@@ -7,6 +7,9 @@ import Button from "../../../Ui/Button";
 import { useRecoilState } from "recoil";
 import { IsLoggedIn, IsModal, Message, UserObj } from "../../../atoms/State";
 import Modal from "../../../Ui/Modal";
+import DaumPostcode from "react-daum-postcode";
+import Post from "../../Post";
+import Address from "../../../Ui/Address";
 function CreateMain() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(IsLoggedIn);
   const [name, setName] = useState("");
@@ -19,6 +22,7 @@ function CreateMain() {
   const navigate = useNavigate();
   const [userObj, setUserObj] = useRecoilState(UserObj);
   const [isModal, setIsModal] = useRecoilState(IsModal);
+  const [toggleAdd, setToggleAdd] = useState(false);
 
   const handleText = (e) => {
     const {
@@ -29,12 +33,18 @@ function CreateMain() {
     else if (name === "password") setPassword(value);
     else if (name === "checkPassword") setCheckPassword(value);
     else if (name === "phone") setPhone(value);
-    else if (name === "address") setAddress(value);
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    if (!name || !email || !password || !checkPassword || !phone || !address) {
+    if (
+      !name ||
+      !email ||
+      !password ||
+      !checkPassword ||
+      !phone ||
+      !address.address
+    ) {
       SetMessage({
         type: "Error",
         message: "모든 항목을 입력해 주세요.",
@@ -102,7 +112,8 @@ function CreateMain() {
         email,
         password,
         phone,
-        address,
+        address: address.address,
+        zonecode: address.zonecode,
         uid: authService.currentUser.uid,
       };
       await dbService
@@ -119,6 +130,13 @@ function CreateMain() {
       setIsModal(true);
     }
   };
+
+  const handleAddress = (e) => {
+    e.preventDefault();
+    if (e.target.className === "closeBtn") return setToggleAdd(false);
+    setToggleAdd(true);
+  };
+
   return (
     <>
       <Modal
@@ -177,14 +195,11 @@ function CreateMain() {
             onChange={handleText}
             text="배송, 인증에 사용될 연락처를 입력하세요."
           />
-          <TextForm
-            type="text"
-            id="address"
-            name="address"
-            value={address}
-            placeholder="주소"
-            onChange={handleText}
-            text="배송을 위한 주소를 입력하세요."
+          <Address
+            handleAddress={handleAddress}
+            toggleAdd={toggleAdd}
+            setAddress={setAddress}
+            setToggleAdd={setToggleAdd}
           />
           <Button type="submit" resist>
             회원가입

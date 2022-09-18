@@ -4,6 +4,7 @@ import { useRecoilState } from "recoil";
 import {
   HandleTime,
   IsResisted,
+  SellData,
   SellItem,
   Today,
   UserObj,
@@ -11,6 +12,7 @@ import {
 import SellResist from "./SellResist";
 import firebase from "firebase/compat/app";
 import { useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 
 function SellResistPage() {
   const [userObj, setUserObj] = useRecoilState(UserObj);
@@ -20,6 +22,7 @@ function SellResistPage() {
   const navigate = useNavigate();
   const [isResisted, setIsResisted] = useRecoilState(IsResisted);
   const [handleTime, setHandleTime] = useRecoilState(HandleTime);
+  const [imgToggle, setImgToggle] = useState(false);
 
   const handleProduct = async (e) => {
     e.preventDefault();
@@ -27,10 +30,20 @@ function SellResistPage() {
       !sellItem.productName ||
       !sellItem.salePrice ||
       !sellItem.sellPrice ||
+      !sellItem.seller ||
+      !sellItem.parcelPrice ||
+      !sellItem.courier ||
       !productImg
     ) {
       return console.error("모든 항목을 입력하십시오");
     }
+
+    for (let i = 0; i < sellItem.bundle.length; i++) {
+      const item = sellItem.bundle[i];
+      if (!item.capacity || !item.amount || !item.price)
+        return console.error("모든 항목을 입력하십시오");
+    }
+
     setHandleTime((prev) => !prev);
     const blob = await resizeImg();
     const photoName = `images/product/sell/${Date.now()}.jpeg`;
@@ -58,47 +71,34 @@ function SellResistPage() {
         try {
           const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
           console.log("다운로드 URL : ", downloadURL);
-
-          await dbService.collection("sell").doc(today).set({
-            category: sellItem.category,
-            uid: userObj.uid,
-            productName: sellItem.productName,
-            salePrice: sellItem.salePrice,
-            sellPrice: sellItem.sellPrice,
-            parcelPrice: sellItem.parcelPrice,
-            courier: sellItem.courier,
-            seller: sellItem.seller,
-            etc: sellItem.etc,
-            img: downloadURL,
-            resistDate: today,
-          });
+          const num = uuidv4();
+          await dbService
+            .collection("sell")
+            .doc(today)
+            .set({
+              ...sellItem,
+              uid: userObj.uid,
+              img: downloadURL,
+              resistDate: today,
+              num,
+            });
 
           await dbService
             .collection("users")
             .doc(userObj.uid)
             .update({
               sellItems: firebase.firestore.FieldValue.arrayUnion({
-                category: sellItem.category,
-                productName: sellItem.productName,
-                salePrice: sellItem.salePrice,
-                sellPrice: sellItem.sellPrice,
-                parcelPrice: sellItem.parcelPrice,
-                courier: sellItem.courier,
-                seller: sellItem.seller,
-                etc: sellItem.etc,
+                ...sellItem,
+                uid: userObj.uid,
                 img: downloadURL,
                 resistDate: today,
+                num,
               }),
             });
 
-          setSellItem({
-            productName: "",
-            salePrice: 0,
-            sellPrice: 0,
-            img: "",
-            resistdate: today,
-          });
+          setSellItem({});
           setIsResisted((prev) => !prev);
+          setImgToggle(false);
         } catch (e) {
           console.error("에러가 발생 하였습니다", e);
         }
@@ -120,6 +120,7 @@ function SellResistPage() {
     let x = canvas.width / 2 - (img.width / 2) * scale;
     let y = canvas.height / 2 - (img.height / 2) * scale;
     ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+    setImgToggle(true);
     return new Promise((resolve) => {
       canvas.toBlob((blob) => {
         resolve(blob);
@@ -141,6 +142,7 @@ function SellResistPage() {
         handleProduct={handleProduct}
         productImg={productImg}
         setProductImg={setProductImg}
+        imgToggle={imgToggle}
       />
     </div>
   );

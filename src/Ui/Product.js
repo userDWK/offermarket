@@ -16,11 +16,11 @@ import Product_Sell from "./UiComponent/Product_Sell";
 
 const ProductForm = styled.div`
   position: relative;
-  height: 30rem;
+  height: 35em;
   width: 25rem;
-  // border: 1px solid rgba(0, 0, 0, 0.3);
   border-radius: 0.75rem;
   cursor: pointer;
+
   &:last-child {
     gap: 0;
   }
@@ -41,7 +41,10 @@ const ProductForm = styled.div`
     position: relative;
     margin-top: 3rem;
     left: 10%;
+    color : black;
+
     h5 {
+      width : 85%;
       font-size: 1.35rem;
       font-weight: 500;
       margin: 2rem 0 0.5rem;
@@ -70,11 +73,12 @@ const ProductForm = styled.div`
       margin: 0.5rem 0 1.5rem;
       font-weight: bold;
     }
-    
+
+    &:hover .itemBox {
+      text-decoration : none;
   }
-  .etcBox {
-    margin : 5rem 0;
   }
+  
 
 
 

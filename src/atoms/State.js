@@ -90,3 +90,14 @@ export const SelectProduct = atom({
   key: "selectProduct",
   default: {},
 });
+
+// export const AddArr = atom({
+//   key: "addArr",
+//   default: [
+//     {
+//       capacity: "",
+//       amount: "",
+//       price: "",
+//     },
+//   ],
+// });

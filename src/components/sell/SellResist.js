@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Button from "../../Ui/Button";
 import FormBox from "../../Ui/FormBox";
 import Selector from "../../Ui/Selector";
@@ -8,12 +8,20 @@ import { SellItem } from "../../atoms/State";
 import { useRecoilState } from "recoil";
 import { v4 as uuidv4 } from "uuid";
 
-const SellResist = ({ handleProduct, productImg, setProductImg }) => {
+const SellResist = ({
+  handleProduct,
+  productImg,
+  setProductImg,
+  imgToggle,
+}) => {
   const [etcToggle, setEtcToggle] = useState(false);
   const [bundleToggle, setBundleToggle] = useState(false);
   const [sellItem, setSellItem] = useRecoilState(SellItem);
   const [bundleCnt, setBundleCnt] = useState(1);
   const [addArr, setAddArr] = useState([]);
+  const [changedBundleCnt, setChangedBundleCnt] = useState(false);
+  const item = useRef(null);
+
   const handleImg = async (e) => {
     const file = e.target.files[0];
     if (!file.type.startsWith("image/")) return;
@@ -25,45 +33,53 @@ const SellResist = ({ handleProduct, productImg, setProductImg }) => {
   };
 
   const handleData = (e) => {
-    setSellItem({
-      ...sellItem,
+    item.current = {
+      ...item.current,
       [e.target.name]: e.target.value,
-    });
+    };
   };
 
   const handleToggle = (e) => {
     e.preventDefault();
     const name = e.target.name;
-    if (name === "etc") setEtcToggle((prev) => !prev);
-    else if (name === "bundle") setBundleToggle((prev) => !prev);
+    if (name === "etc") {
+      setEtcToggle((prev) => !prev);
+    } else if (name === "bundle") {
+      setBundleToggle((prev) => !prev);
+    }
   };
 
   const handleBundle = (e) => {
-    e.preventDefault();
     const {
-      target: { name, id, value },
+      target: { id, value },
     } = e;
-    if (name === "bundleCnt") {
+
+    if (id === "bundleCnt") {
       return setBundleCnt(value);
     }
-    let data = addArr;
-    if (name === "capacity") {
-      data[+id] = { ...data[+id], capicity: value };
-    } else if (name === "amount") {
-      data[+id] = { ...data[+id], amount: value };
-    } else if (name === "price") {
-      data[+id] = { ...data[+id], price: value };
-    }
-    setAddArr(data);
+
+    const [key, idx] = id.split("_");
+
+    setAddArr((prev) => {
+      prev[idx][key] = value;
+
+      return prev;
+    });
   };
+
   const addSelect = (e) => {
     e.preventDefault();
-    const arr = new Array(parseInt(bundleCnt)).fill({
-      capicity: "",
-      amount: "",
-      price: "",
+    const arr = new Array(parseInt(bundleCnt)).fill({}).map((_, idx) => {
+      return {};
     });
     setAddArr(arr);
+  };
+
+  const addBundleData = (e) => {
+    setSellItem({
+      ...item.current,
+      bundle: addArr,
+    });
   };
 
   return (
@@ -77,29 +93,38 @@ const SellResist = ({ handleProduct, productImg, setProductImg }) => {
           <div className="productNameBox">
             <TextForm
               type="text"
+              // value={sellItem.productName}
               onChange={handleData}
               id="productName"
               name="productName"
-              placeholder="상품명"
+              placeholder="ex) 삼성전자 양문형 900L 냉장고"
               text="검색 시, 노출할 상품명을 입력하세요."
+              maxLength="50"
+              minLength="5"
             />
           </div>
           <div className="productPrice">
             <TextForm
               type="number"
+              // value={sellItem.salePrice}
               onChange={handleData}
               id="salePrice"
               name="salePrice"
-              placeholder="할인 전 가격"
+              placeholder="ex) 15000, 35000"
               text="할인 전 기준 판매가"
+              maxLength="15"
+              minLength="2"
             />
             <TextForm
               type="number"
+              // value={sellItem.sellPrice}
               onChange={handleData}
               id="sellPrice"
               name="sellPrice"
-              placeholder="판매가"
+              placeholder="ex) 30000, 2500"
               text="실제 판매가"
+              maxLength="15"
+              minLength="2"
             />
           </div>
           <div className="productImg">
@@ -108,12 +133,14 @@ const SellResist = ({ handleProduct, productImg, setProductImg }) => {
               onChange={handleImg}
               id="productImage"
               name="productImage"
-              text="판매 상품 사진"
+              text="상품 사진 등록"
               accept="image/*"
             />
             <figure>
-              <img src={productImg ? productImg : empty} />
-
+              <img
+                className={(imgToggle && "hide").toString()}
+                src={productImg ? productImg : empty}
+              />
               <canvas id="canvas" />
             </figure>
           </div>
@@ -132,38 +159,42 @@ const SellResist = ({ handleProduct, productImg, setProductImg }) => {
                 onChange={handleData}
                 id="seller"
                 name="seller"
-                placeholder="판매자(사업소재지)"
-                text="판매자(사업소재지) : "
+                placeholder="ex) 오퍼마켓 (부산시 동래구 수안동...)"
+                text="판매자(사업장 소재지) : "
+                maxLength="80"
+                minLength="5"
               />
               <TextForm
-                type="택배사"
+                type="text"
                 onChange={handleData}
                 id="courier"
                 name="courier"
-                placeholder="택배사"
+                placeholder="ex) 우체국, 로젠, cj대한통운"
                 text="택배사 : "
+                maxLength="15"
+                minLength="2"
               />
               <TextForm
                 type="number"
                 onChange={handleData}
                 id="parcelPrice"
                 name="parcelPrice"
-                placeholder="배송비"
+                placeholder="ex) 3000, 무료"
                 text="배송비 : "
+                maxLength="15"
+                minLength="2"
               />
-              <label htmlFor="etc">기타 정보</label>
+              <label htmlFor="etc">기타 정보 : </label>
               <textarea onChange={handleData} name="etc" id="etc" />
             </FormBox>
           </div>
           <div className="bundleBox">
             <div className="bundleCntBox">
               <TextForm
-                type="number"
-                value={bundleCnt}
+                type="text"
                 onChange={handleBundle}
                 id="bundleCnt"
-                name="bundleCnt"
-                placeholder="상품 번들 수"
+                placeholder="ex) 3, 15, 20"
                 text="추가 할 상품 번들의 수를 입력하세요."
               />
               <Button onclick={addSelect}>추가</Button>
@@ -176,31 +207,34 @@ const SellResist = ({ handleProduct, productImg, setProductImg }) => {
                 return (
                   <div key={uuidv4()}>
                     <TextForm
-                      type="number"
-                      value={addArr[index]}
+                      type="text"
+                      value={select.capacity}
                       onChange={handleBundle}
-                      id={index}
-                      name="capacity"
-                      placeholder="용량"
-                      text="추가 할 상품 용량을 입력하세요."
+                      id={`capacity_${index}`}
+                      placeholder="ex) 150g, 2L"
+                      text="용량/사이즈(단위 포함)를 입력하세요."
+                      maxLength="15"
+                      minLength="2"
+                    />
+                    <TextForm
+                      type="text"
+                      value={select.amount}
+                      onChange={handleBundle}
+                      id={`amount_${index}`}
+                      placeholder="ex) 5세트, 10개, 15묶음"
+                      text="상품 개수(단위 포함)를 입력하세요."
+                      maxLength="15"
+                      minLength="2"
                     />
                     <TextForm
                       type="number"
-                      value={addArr[index]}
+                      value={select.price}
                       onChange={handleBundle}
-                      id={index}
-                      name="amount"
-                      placeholder="개수"
-                      text="추가 할 상품 개수를 입력하세요."
-                    />
-                    <TextForm
-                      type="number"
-                      value={addArr[index]}
-                      onChange={handleBundle}
-                      id={index}
-                      name="price"
-                      placeholder="가격"
-                      text="추가 할 번들의 가격을 입력하세요."
+                      id={`price_${index}`}
+                      placeholder="ex) 3000, 50000"
+                      text="판매가를 입력하세요."
+                      maxLength="15"
+                      minLength="2"
                     />
                   </div>
                 );
@@ -208,7 +242,7 @@ const SellResist = ({ handleProduct, productImg, setProductImg }) => {
             </FormBox>
           </div>
 
-          <Button type="submit" resist etcToggle={etcToggle}>
+          <Button type="submit" resist onclick={addBundleData}>
             상품 판매 등록
           </Button>
         </form>

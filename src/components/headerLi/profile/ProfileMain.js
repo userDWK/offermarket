@@ -9,6 +9,8 @@ import { IsLoggedIn, IsModal, Message, UserObj } from "../../../atoms/State";
 import Modal from "../../../Ui/Modal";
 import MySellProduct from "./MyProduct";
 import MyProduct from "./MyProduct";
+import Post from "../../Post";
+import Address from "../../../Ui/Address";
 function ProfileMain() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(IsLoggedIn);
   const [message, SetMessage] = useRecoilState(Message);
@@ -16,6 +18,7 @@ function ProfileMain() {
   const [address, setAddress] = useState(userObj.address);
   const [nick, setNick] = useState(userObj.nick);
   const [isModal, setIsModal] = useRecoilState(IsModal);
+  const [toggleAdd, setToggleAdd] = useState(false);
 
   const handleText = (e) => {
     const {
@@ -49,11 +52,15 @@ function ProfileMain() {
     }
     try {
       await dbService.collection("users").doc(userObj.uid).update({
-        address: address,
+        address: address.address,
+        zonecode: address.zonecode,
         nick: nick,
       });
-
-      setAddress("");
+      SetMessage({
+        type: "Success",
+        message: "정보 변경에 성공하였습니다.",
+      });
+      setIsModal(true);
     } catch (error) {
       SetMessage({
         type: "Error",
@@ -62,6 +69,13 @@ function ProfileMain() {
       setIsModal(true);
     }
   };
+
+  const handleAddress = (e) => {
+    e.preventDefault();
+    if (e.target.className === "closeBtn") return setToggleAdd(false);
+    setToggleAdd(true);
+  };
+
   return (
     <>
       <Modal
@@ -99,14 +113,11 @@ function ProfileMain() {
               onChange={handleText}
               text="변경할 닉네임을 입력하세요"
             />
-            <TextForm
-              type="text"
-              id="address"
-              name="address"
-              value={address}
-              placeholder="주소"
-              onChange={handleText}
-              text="변경할 배송지를 입력하세요"
+            <Address
+              handleAddress={handleAddress}
+              toggleAdd={toggleAdd}
+              setAddress={setAddress}
+              setToggleAdd={setToggleAdd}
             />
             <Button type="submit" resist className="modify">
               수정하기

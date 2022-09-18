@@ -12,7 +12,7 @@ import {
   getDocs,
   updateDoc,
 } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import firebase from "firebase/compat/app";
 import { render } from "@testing-library/react";
 
@@ -21,24 +21,22 @@ const MyProduct = () => {
   const [userObj, setUserObj] = useRecoilState(UserObj);
   const [mySell, setMySell] = useState([]);
   const [myPurchase, setMyPurchase] = useState([]);
+  const location = useLocation();
 
   let navigate = useNavigate();
 
-  const getData = useCallback(
-    async (q) => {
-      const data = await getDocs(q);
-      data.docs.map((doc, i) => {
-        setMySell(doc.data().sellItems);
-        setMyPurchase(doc.data().purchaseItems);
-      });
-    },
-    [mySell, myPurchase]
-  );
-  const searchData = useCallback(() => {
+  const getData = async (q) => {
+    const data = await getDocs(q);
+    data.docs.map((doc, i) => {
+      setMySell(doc.data().sellItems);
+      setMyPurchase(doc.data().purchaseItems);
+    });
+  };
+  const searchData = () => {
     const userRef = dbService.collection("users");
     const q = userRef.where("uid", "==", `${userObj.uid}`);
     getData(q);
-  }, [mySell, myPurchase]);
+  };
 
   const movePage = (className) => {
     if (className === "sell")
@@ -63,7 +61,21 @@ const MyProduct = () => {
   };
   useEffect(() => {
     searchData();
+    a();
   }, []);
+
+  const a = () => {
+    if (location.pathname.includes("/profile")) {
+      mySell.length && localStorage.setItem("mySell", JSON.stringify(mySell));
+      myPurchase.length &&
+        localStorage.setItem("myPurchase", JSON.stringify(myPurchase));
+
+      localStorage.getItem("mySell") &&
+        setMySell(JSON.parse(localStorage.getItem("mySell")));
+      localStorage.getItem("myPurchase") &&
+        setMyPurchase(JSON.parse(localStorage.getItem("myPurchase")));
+    }
+  };
 
   const handleDelete = async (e) => {
     e.preventDefault();
