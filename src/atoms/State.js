@@ -15,29 +15,30 @@ export const Message = atom({
   default: {
     message: "",
     type: "",
+    page: "/",
   },
 });
 
 export const SellItem = atom({
   key: "sellItem",
   default: {
-    category: "",
-    productName: "",
-    salePrice: 0,
-    sellPrice: 0,
-    img: "",
-    resistdate: null,
+    // category: "",
+    // productName: "",
+    // salePrice: 0,
+    // sellPrice: 0,
+    // img: "",
+    // resistDate: null,
   },
 });
 
 export const PurchaseItem = atom({
   key: "purchaseItem",
   default: {
-    category: "",
-    productName: "",
-    purchasePrice: 0,
-    img: "",
-    resistdate: null,
+    // category: "",
+    // productName: "",
+    // purchasePrice: 0,
+    // img: "",
+    // resistDate: null,
   },
 });
 
@@ -90,14 +91,3 @@ export const SelectProduct = atom({
   key: "selectProduct",
   default: {},
 });
-
-// export const AddArr = atom({
-//   key: "addArr",
-//   default: [
-//     {
-//       capacity: "",
-//       amount: "",
-//       price: "",
-//     },
-//   ],
-// });

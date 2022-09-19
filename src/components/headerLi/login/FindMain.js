@@ -12,7 +12,7 @@ const FindMain = () => {
   const [email, setEmail] = useState("");
   const [isModal, setIsModal] = useRecoilState(IsModal);
   const [message, SetMessage] = useRecoilState(Message);
-  // const navigate = useNavigate();
+
   const handleText = (e) => {
     const {
       target: { name, value },
@@ -28,6 +28,7 @@ const FindMain = () => {
       SetMessage({
         type: "Error",
         message: "이메일이 존재하지 않습니다.",
+        page: "login",
       });
 
       setIsModal(true);
@@ -39,7 +40,7 @@ const FindMain = () => {
         show={isModal}
         text={message.message}
         type={message.type}
-        login
+        page={message.page}
         close={() => {
           setIsModal(false);
         }}

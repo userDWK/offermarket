@@ -14,11 +14,7 @@ const PurchaseResist = ({
   setProductImg,
   imgToggle,
 }) => {
-  const [category, setCategory] = useState("");
-  const [productName, setProductName] = useState("");
-  const [purchasePrice, setPurchasePrice] = useState(0);
   const [toggle, setToggle] = useState(false);
-  const [userObj, setUserObj] = useRecoilState(UserObj);
   const [purchaseItem, setPurchaseItem] = useRecoilState(PurchaseItem);
   const [etcToggle, setEtcToggle] = useState(false);
   const [bundleToggle, setBundleToggle] = useState(false);

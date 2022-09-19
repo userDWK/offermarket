@@ -208,8 +208,9 @@ const FormDiv = styled.div`
         width: 80%;
         height: 100%;
         border: none;
+
         .information {
-          width: 30%;
+          width: 23%;
           border-right: 1px solid rgba(50, 50, 50, 0.2);
           padding-right: 2rem;
           p {
@@ -345,32 +346,14 @@ const FormDiv = styled.div`
           }
           
           
-          .purchaseBox {
+          .purchaseBox, .sellBox {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
             align-items: center;
             margin-top : 3rem;
-            input {
-              width: 20%;
-              height: 4rem;
-              border: 1px solid rgba(50, 50, 50, 0.2);
-              border-radius: 5px;
-              font-size: 1.5rem;
-              text-align: center;
-            }
-            input[type="number"]::-webkit-outer-spin-button,
-            input[type="number"]::-webkit-inner-spin-button {
-              opacity : 1;
-              height : 3.8rem;
-              width : 4rem;
-              padding-right : 0.75rem;
-              margin: 0;
-              margin-right : -0.15rem;
-              outline : 1px solid rgba(50,50,50,0.2);
-              outline-right : 0;
-            }
+            
             button {
-              margin-right: 0;
+              margin-right : 0;
               width: 36%;
               height: 4rem;
               background: rgba(250, 250, 250, 0.1);
@@ -393,6 +376,27 @@ const FormDiv = styled.div`
               }
             }
           }
+        }
+      }
+      .sellBox {
+        input {
+          width: 20%;
+          height: 4rem;
+          border: 1px solid rgba(50, 50, 50, 0.2);
+          border-radius: 5px;
+          font-size: 1.5rem;
+          text-align: center;
+        }
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+          opacity : 1;
+          height : 3.8rem;
+          width : 4rem;
+          padding-right : 0.75rem;
+          margin: 0;
+          margin-right : -0.15rem;
+          outline : 1px solid rgba(50,50,50,0.2);
+          outline-right : 0;
         }
       }
       `}
@@ -430,9 +434,8 @@ const FormDiv = styled.div`
         css`
       width: 50rem;
       height: auto;
-      border-radius: 6px;
-      border-style: solid;
-      border: 1px solid #111;
+      border: none;
+      
       table {
         width: 46rem;
         text-align: left;
@@ -443,6 +446,8 @@ const FormDiv = styled.div`
           color: tomato;
           font-weight: bold;
           padding: 1rem 0;
+          border: 1px solid rgba(230,230,230,1);
+          border-bottom : 0;    
         }
 
         tr {
@@ -545,7 +550,7 @@ const FormDiv = styled.div`
     ${(props) =>
       props.className === "interest" &&
       css`
-        width: 70%;
+        width: 60%;
         border: none;
 
         h2 {
@@ -580,10 +585,25 @@ const FormDiv = styled.div`
             padding: 0 4rem;
             border-bottom: 1px solid rgba(230, 230, 230, 1);
 
+            button {
+              background: rgba(250, 150, 100, 1);
+              border: 0;
+              font-size: 0.9rem;
+              font-weight: bold;
+              padding: 0.3rem 0.5rem;
+              cursor: pointer;
+              border-radius: 4px;
+              &:hover {
+                background: rgba(230, 50, 100, 1);
+                box-shadow: 0 0 5px lightcoral;
+              }
+            }
+
             img {
               width: 10rem;
               height: 10rem;
               padding: 1rem 0;
+              margin-left: 1rem;
             }
             a {
               flex: 1;
@@ -596,6 +616,45 @@ const FormDiv = styled.div`
               p {
                 font-size: 1rem;
                 padding: 1rem 0;
+              }
+            }
+            div {
+              width: 18rem;
+              padding: 0;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              border: 0;
+
+              input {
+                width: 3rem;
+                height: 2rem;
+                border: none;
+                border-top: 1px solid rgba(220, 220, 220, 1);
+                border-bottom: 1px solid rgba(220, 220, 220, 1);
+                text-align: center;
+                font-size: 0.9rem;
+              }
+              input[type="number"]::-webkit-outer-spin-button,
+              input[type="number"]::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+              }
+              button {
+                width: 2rem;
+                height: 2rem;
+                background: white;
+                border: 1px solid rgba(220, 220, 220, 1);
+                color: #111;
+                font-size: 1.25rem;
+                padding: 0;
+                line-height: 160%;
+                padding-left: 0.03rem;
+
+                &:hover {
+                  background: rgba(230, 230, 230, 1);
+                  box-shadow: none;
+                }
               }
             }
           }

@@ -2,17 +2,19 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import {
-  SellItem,
   UserObj,
   PurchaseItem,
   Today,
   IsResisted,
   HandleTime,
+  IsModal,
+  Message,
 } from "../../atoms/State";
 import { dbService, storageService } from "../../fbase";
 import firebase from "firebase/compat/app";
 import PurchaseResist from "./PurchaseResist";
 import { v4 as uuidv4 } from "uuid";
+import Modal from "../../Ui/Modal";
 
 function PurchaseResistPage() {
   const [userObj, setUserObj] = useRecoilState(UserObj);
@@ -22,6 +24,8 @@ function PurchaseResistPage() {
   const [isResisted, setIsResisted] = useRecoilState(IsResisted);
   const [handleTime, setHandleTime] = useRecoilState(HandleTime);
   const [imgToggle, setImgToggle] = useState(false);
+  const [isModal, setIsModal] = useRecoilState(IsModal);
+  const [message, setMessage] = useRecoilState(Message);
 
   const navigate = useNavigate();
 
@@ -32,7 +36,12 @@ function PurchaseResistPage() {
       !purchaseItem.purchasePrice ||
       !productImg
     ) {
-      return console.error("모든 항목을 입력하십시오");
+      setMessage({
+        type: "error",
+        message: "모든 항목을 입력해 주십시오",
+        page: undefined,
+      });
+      return setIsModal(true);
     }
     setHandleTime((prev) => !prev);
     const blob = await resizeImg();
@@ -50,7 +59,12 @@ function PurchaseResistPage() {
       (e) => {
         switch (e.code) {
           case "storage/unauthorized":
-            console.error("허가 되지 않은 경로 입니다");
+            setMessage({
+              type: "error",
+              message: "허가 되지 않은 경로 입니다",
+              page: undefined,
+            });
+            setIsModal(true);
             break;
           case "storage/unknown":
             console.error(e.serverResponse);
@@ -90,7 +104,13 @@ function PurchaseResistPage() {
           setIsResisted((prev) => !prev);
           setImgToggle(false);
         } catch (e) {
-          console.error("에러가 발생 하였습니다", e);
+          setMessage({
+            message: "에러가 발생 하였습니다",
+            type: "Error",
+            page: undefined,
+          });
+          setIsModal(true);
+          console.error(e);
         }
       }
     );
@@ -126,14 +146,25 @@ function PurchaseResistPage() {
     });
   };
   return (
-    <div className="tradeResist">
-      <PurchaseResist
-        handleProduct={handleProduct}
-        productImg={productImg}
-        setProductImg={setProductImg}
-        imgToggle={imgToggle}
-      />
-    </div>
+    <>
+      <Modal
+        show={isModal}
+        text={message.message}
+        type={message.type}
+        page={message.page}
+        close={() => {
+          setIsModal(false);
+        }}
+      ></Modal>
+      <div className="tradeResist">
+        <PurchaseResist
+          handleProduct={handleProduct}
+          productImg={productImg}
+          setProductImg={setProductImg}
+          imgToggle={imgToggle}
+        />
+      </div>
+    </>
   );
 }
 

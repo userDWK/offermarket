@@ -4,7 +4,13 @@ import Header from "../../Ui/Header";
 import Nav from "../../Ui/Nav";
 import Logo from "../../images/header.jpg";
 import { useRecoilState } from "recoil";
-import { DisPage, IsLoggedIn, IsModal, UserObj } from "../../atoms/State";
+import {
+  DisPage,
+  IsLoggedIn,
+  IsModal,
+  Message,
+  UserObj,
+} from "../../atoms/State";
 import Selector from "../../Ui/Selector";
 import { authService } from "../../fbase";
 import Modal from "../../Ui/Modal";
@@ -20,6 +26,7 @@ function MainHeader() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(IsLoggedIn);
   const [userObj, setUserObj] = useRecoilState(UserObj);
   const [isModal, setIsModal] = useRecoilState(IsModal);
+  const [message, setMessage] = useRecoilState(Message);
 
   const navigate = useNavigate();
   const handleText = (e) => {
@@ -35,6 +42,11 @@ function MainHeader() {
   };
   const checkLogin = (e) => {
     if (!userObj) {
+      setMessage({
+        message: "로그인 후, 이용해 주세요.",
+        type: "Error",
+        page: "login",
+      });
       setIsModal(true);
     }
   };
@@ -43,9 +55,9 @@ function MainHeader() {
     <div className="mainHeader">
       <Modal
         show={isModal}
-        text="로그인 후, 이용해 주세요."
-        type="Error"
-        login
+        text={message.message}
+        type={message.type}
+        page={message.page}
         close={() => {
           setIsModal(false);
         }}

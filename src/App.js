@@ -19,6 +19,7 @@ import {
 import ProfilePage from "./page/ProfilePage";
 import { getDocs } from "firebase/firestore";
 import InterestPage from "./page/InterestPage";
+import CartPage from "./page/CartPage";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(IsLoggedIn);
   const [userObj, setUserObj] = useRecoilState(UserObj);
@@ -98,6 +99,7 @@ function App() {
           <Route path="purchase/*" element={<PurchasePage />} />
           <Route path="sell/*" element={<SellPage />} />
           <Route path="interest/*" element={<InterestPage />} />
+          <Route path="cart/*" element={<CartPage />} />
         </Routes>
       </div>
     </Router>

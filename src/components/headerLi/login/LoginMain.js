@@ -35,6 +35,7 @@ function LoginMain() {
       setMessage({
         type: "error",
         message: "일치하지 않는 정보입니다",
+        page: undefined,
       });
       setIsModal(true);
     }
@@ -74,6 +75,7 @@ function LoginMain() {
       setMessage({
         type: "Error",
         message: error,
+        page: undefined,
       });
       setIsModal(true);
     }
@@ -84,6 +86,7 @@ function LoginMain() {
         show={isModal}
         text={message.message}
         type={message.type}
+        page={message.page}
         close={() => {
           setIsModal(false);
         }}

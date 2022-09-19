@@ -48,6 +48,7 @@ function CreateMain() {
       SetMessage({
         type: "Error",
         message: "모든 항목을 입력해 주세요.",
+        page: undefined,
       });
       setIsModal(true);
       return;
@@ -56,6 +57,7 @@ function CreateMain() {
       SetMessage({
         type: "Error",
         message: "영어 또는 한글로 구성된 2글자 이상의 이름을 입력해 주십시오",
+        page: undefined,
       });
 
       setIsModal(true);
@@ -69,6 +71,7 @@ function CreateMain() {
       SetMessage({
         type: "Error",
         message: "이메일 형식에 벗어납니다",
+        page: undefined,
       });
       setIsModal(true);
       return;
@@ -77,6 +80,7 @@ function CreateMain() {
       SetMessage({
         type: "Error",
         message: "비밀번호가 일치하지 않습니다",
+        page: undefined,
       });
       setIsModal(true);
       return;
@@ -91,6 +95,7 @@ function CreateMain() {
         type: "Error",
         message:
           "영문, 숫자, 특수문자를 포함한 8자리 이상의 비밀번호를 입력해 주십시오",
+        page: undefined,
       });
 
       setIsModal(true);
@@ -100,6 +105,7 @@ function CreateMain() {
       SetMessage({
         type: "Error",
         message: "휴대폰 번호를 정확히 입력해 주십시오",
+        page: undefined,
       });
       setIsModal(true);
       return;
@@ -126,6 +132,7 @@ function CreateMain() {
       SetMessage({
         type: "Error",
         message: error,
+        page: undefined,
       });
       setIsModal(true);
     }
@@ -143,6 +150,7 @@ function CreateMain() {
         show={isModal}
         text={message.message}
         type={message.type}
+        page={message.page}
         close={() => {
           setIsModal(false);
         }}

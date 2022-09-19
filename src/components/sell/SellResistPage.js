@@ -3,7 +3,9 @@ import { dbService, storageService } from "../../fbase";
 import { useRecoilState } from "recoil";
 import {
   HandleTime,
+  IsModal,
   IsResisted,
+  Message,
   SellData,
   SellItem,
   Today,
@@ -13,6 +15,7 @@ import SellResist from "./SellResist";
 import firebase from "firebase/compat/app";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
+import Modal from "../../Ui/Modal";
 
 function SellResistPage() {
   const [userObj, setUserObj] = useRecoilState(UserObj);
@@ -23,6 +26,8 @@ function SellResistPage() {
   const [isResisted, setIsResisted] = useRecoilState(IsResisted);
   const [handleTime, setHandleTime] = useRecoilState(HandleTime);
   const [imgToggle, setImgToggle] = useState(false);
+  const [isModal, setIsModal] = useRecoilState(IsModal);
+  const [message, setMessage] = useRecoilState(Message);
 
   const handleProduct = async (e) => {
     e.preventDefault();
@@ -35,13 +40,23 @@ function SellResistPage() {
       !sellItem.courier ||
       !productImg
     ) {
-      return console.error("모든 항목을 입력하십시오");
+      setMessage({
+        type: "error",
+        message: "모든 항목을 입력해 주십시오",
+        page: undefined,
+      });
+      return setIsModal(true);
     }
 
     for (let i = 0; i < sellItem.bundle.length; i++) {
       const item = sellItem.bundle[i];
       if (!item.capacity || !item.amount || !item.price)
-        return console.error("모든 항목을 입력하십시오");
+        setMessage({
+          type: "error",
+          message: "모든 항목을 입력해 주십시오",
+          page: undefined,
+        });
+      return setIsModal(true);
     }
 
     setHandleTime((prev) => !prev);
@@ -60,7 +75,12 @@ function SellResistPage() {
       (e) => {
         switch (e.code) {
           case "storage/unauthorized":
-            console.error("허가 되지 않은 경로 입니다");
+            setMessage({
+              type: "error",
+              message: "허가 되지 않은 경로 입니다",
+              page: undefined,
+            });
+            setIsModal(true);
             break;
           case "storage/unknown":
             console.error(e.serverResponse);
@@ -100,7 +120,13 @@ function SellResistPage() {
           setIsResisted((prev) => !prev);
           setImgToggle(false);
         } catch (e) {
-          console.error("에러가 발생 하였습니다", e);
+          setMessage({
+            type: "Error",
+            message: "에러가 발생하였습니다.",
+            page: undefined,
+          });
+          console.error(e);
+          setIsModal(true);
         }
       }
     );
@@ -137,14 +163,25 @@ function SellResistPage() {
     });
   };
   return (
-    <div className="tradeResist">
-      <SellResist
-        handleProduct={handleProduct}
-        productImg={productImg}
-        setProductImg={setProductImg}
-        imgToggle={imgToggle}
-      />
-    </div>
+    <>
+      <Modal
+        show={isModal}
+        text={message.message}
+        type={message.type}
+        page={message.page}
+        close={() => {
+          setIsModal(false);
+        }}
+      ></Modal>
+      <div className="tradeResist">
+        <SellResist
+          handleProduct={handleProduct}
+          productImg={productImg}
+          setProductImg={setProductImg}
+          imgToggle={imgToggle}
+        />
+      </div>
+    </>
   );
 }
 

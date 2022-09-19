@@ -1,20 +1,12 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { UserObj } from "../../../atoms/State";
 import { dbService } from "../../../fbase";
 import { SelectProduct } from "../../../atoms/State";
 import FormBox from "../../../Ui/FormBox";
-import {
-  deleteDoc,
-  deleteField,
-  doc,
-  FieldValue,
-  getDocs,
-  updateDoc,
-} from "firebase/firestore";
+import { deleteDoc, doc, getDocs } from "firebase/firestore";
 import { useLocation, useNavigate } from "react-router-dom";
 import firebase from "firebase/compat/app";
-import { render } from "@testing-library/react";
 
 const MyProduct = () => {
   const [selectProduct, setSelectProduct] = useRecoilState(SelectProduct);
@@ -27,9 +19,13 @@ const MyProduct = () => {
 
   const getData = async (q) => {
     const data = await getDocs(q);
-    data.docs.map((doc, i) => {
-      setMySell(doc.data().sellItems);
-      setMyPurchase(doc.data().purchaseItems);
+    data.docs.forEach((doc, i) => {
+      const sell = doc.data().sellItems;
+      const purchase = doc.data().purchaseItems;
+      setMySell(sell);
+      localStorage.setItem("mySell", JSON.stringify(sell));
+      setMyPurchase(purchase);
+      localStorage.setItem("myPurchase", JSON.stringify(purchase));
     });
   };
   const searchData = () => {
@@ -60,22 +56,16 @@ const MyProduct = () => {
     movePage(className);
   };
   useEffect(() => {
-    searchData();
-    a();
+    if (localStorage.getItem("mySell"))
+      setMySell(JSON.parse(localStorage.getItem("mySell")));
+    if (localStorage.getItem("myPurchase"))
+      setMyPurchase(JSON.parse(localStorage.getItem("myPurchase")));
+    if (
+      !localStorage.getItem("myPurchase") &&
+      !localStorage.getItem("myPurchase")
+    )
+      searchData();
   }, []);
-
-  const a = () => {
-    if (location.pathname.includes("/profile")) {
-      mySell.length && localStorage.setItem("mySell", JSON.stringify(mySell));
-      myPurchase.length &&
-        localStorage.setItem("myPurchase", JSON.stringify(myPurchase));
-
-      localStorage.getItem("mySell") &&
-        setMySell(JSON.parse(localStorage.getItem("mySell")));
-      localStorage.getItem("myPurchase") &&
-        setMyPurchase(JSON.parse(localStorage.getItem("myPurchase")));
-    }
-  };
 
   const handleDelete = async (e) => {
     e.preventDefault();

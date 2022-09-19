@@ -1,80 +1,15 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { authService, dbService } from "../../../fbase";
+import React, { useEffect, useState } from "react";
+import { dbService } from "../../../fbase";
 import FormBox from "../../../Ui/FormBox";
-import TextForm from "../../../Ui/TextForm";
-import Button from "../../../Ui/Button";
 import { useRecoilState } from "recoil";
 import { IsLoggedIn, IsModal, Message, UserObj } from "../../../atoms/State";
 import Modal from "../../../Ui/Modal";
-import MySellProduct from "./MyProduct";
+import ProfileModify from "./ProfileModify";
 import MyProduct from "./MyProduct";
-import Post from "../../Post";
-import Address from "../../../Ui/Address";
+
 function ProfileMain() {
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(IsLoggedIn);
-  const [message, SetMessage] = useRecoilState(Message);
-  const [userObj, setUserObj] = useRecoilState(UserObj);
-  const [address, setAddress] = useState(userObj.address);
-  const [nick, setNick] = useState(userObj.nick);
+  const [message, setMessage] = useRecoilState(Message);
   const [isModal, setIsModal] = useRecoilState(IsModal);
-  const [toggleAdd, setToggleAdd] = useState(false);
-
-  const handleText = (e) => {
-    const {
-      target: { name, value },
-    } = e;
-    if (name === "address") setAddress(value);
-    else if (name === "nick") setNick(value);
-  };
-
-  const handleModify = async (e) => {
-    e.preventDefault();
-    if (!address || !nick) {
-      SetMessage({
-        type: "Error",
-        message: "모든 항목을 입력해 주세요.",
-      });
-      setIsModal(true);
-      return;
-    }
-    if (
-      /[^0-9a-zA-Z가-힣]/g.test(nick) ||
-      nick.length < 2 ||
-      nick.length > 15
-    ) {
-      SetMessage({
-        type: "Error",
-        message: "닉네임은 2~15자리 영어,한글,숫자로 구성해주세요",
-      });
-      setIsModal(true);
-      return;
-    }
-    try {
-      await dbService.collection("users").doc(userObj.uid).update({
-        address: address.address,
-        zonecode: address.zonecode,
-        nick: nick,
-      });
-      SetMessage({
-        type: "Success",
-        message: "정보 변경에 성공하였습니다.",
-      });
-      setIsModal(true);
-    } catch (error) {
-      SetMessage({
-        type: "Error",
-        message: error,
-      });
-      setIsModal(true);
-    }
-  };
-
-  const handleAddress = (e) => {
-    e.preventDefault();
-    if (e.target.className === "closeBtn") return setToggleAdd(false);
-    setToggleAdd(true);
-  };
 
   return (
     <>
@@ -82,48 +17,13 @@ function ProfileMain() {
         show={isModal}
         text={message.message}
         type={message.type}
+        page={message.page}
         close={() => {
           setIsModal(false);
         }}
       ></Modal>
       <FormBox className="profile">
-        <div className="information">
-          <h3>Modify information</h3>
-          <form onSubmit={handleModify}>
-            <p>
-              {" "}
-              이름 <br />
-              <strong>{userObj.name}</strong>
-            </p>
-            <p>
-              {" "}
-              이메일 <br /> <strong> {userObj.email}</strong>
-            </p>
-            <p>
-              {" "}
-              연락처 <br /> <strong>{userObj.phone} </strong>
-            </p>
-            <Button>비밀번호 변경(이메일 전송)</Button>
-            <TextForm
-              type="text"
-              id="nick"
-              name="nick"
-              value={nick}
-              placeholder="닉네임"
-              onChange={handleText}
-              text="변경할 닉네임을 입력하세요"
-            />
-            <Address
-              handleAddress={handleAddress}
-              toggleAdd={toggleAdd}
-              setAddress={setAddress}
-              setToggleAdd={setToggleAdd}
-            />
-            <Button type="submit" resist className="modify">
-              수정하기
-            </Button>
-          </form>
-        </div>
+        <ProfileModify setIsModal={setIsModal} setMessage={setMessage} />
         <div className="product">
           <MyProduct />
           <hr />

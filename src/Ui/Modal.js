@@ -1,10 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
-import { ReactDOM } from "react";
-import { useRecoilState } from "recoil";
-import { IsModal } from "../atoms/State";
-import Button from "./Button";
 import { Link } from "react-router-dom";
+
 const ModalBox = styled.div`
   position: fixed;
   top: 0;
@@ -68,23 +65,40 @@ const ModalForm = styled.div`
       background: rgba(100, 150, 255, 1);
     }
   }
-  .login {
+  .move {
     right: 8rem;
-    width: 13rem;
+    width: 16rem;
   }
   ${(props) =>
-    props.login === undefined &&
+    props.page === undefined &&
     css`
-      .login {
+      .move {
         display: none;
       }
     `}
 `;
 
 const Modal = (props) => {
+  const [data, setData] = useState(undefined);
+  useEffect(() => {
+    switch (props.page) {
+      case "login":
+        setData("로그인");
+        break;
+      case "profile":
+        setData("프로필");
+        break;
+      case "interest":
+        setData("관심상품");
+        break;
+      case "cart":
+        setData("장바구니");
+        break;
+    }
+  }, [props.page]);
   return (
     <ModalBox show={props.show}>
-      <ModalForm login={props.login}>
+      <ModalForm page={props.page}>
         {props.children}
         <span>
           {props.type} : {props.text}
@@ -92,9 +106,9 @@ const Modal = (props) => {
         <div className="close" onClick={props.close}>
           닫기
         </div>
-        <Link to="/login">
-          <div className="close login" onClick={props.close}>
-            로그인 페이지 이동
+        <Link to={props.page && `/${props.page}`}>
+          <div className="close move" onClick={props.close}>
+            {`${data} 페이지로 이동`}
           </div>
         </Link>
       </ModalForm>
