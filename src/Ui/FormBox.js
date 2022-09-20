@@ -577,6 +577,12 @@ const FormDiv = styled.div`
             border-bottom: 1px solid orange;
           }
 
+          strong {
+            display: inline-block;
+            width: 15%;
+            text-align: right;
+          }
+
           div {
             width: 100%;
             display: flex;
@@ -618,7 +624,7 @@ const FormDiv = styled.div`
                 padding: 1rem 0;
               }
             }
-            div {
+            .cntBox {
               width: 18rem;
               padding: 0;
               display: flex;
@@ -657,6 +663,9 @@ const FormDiv = styled.div`
                 }
               }
             }
+          }
+          .cart {
+            width: 10rem;
           }
         }
       `}

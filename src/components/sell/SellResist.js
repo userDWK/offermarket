@@ -4,7 +4,7 @@ import FormBox from "../../Ui/FormBox";
 import Selector from "../../Ui/Selector";
 import TextForm from "../../Ui/TextForm";
 import empty from "../../images/productImg/empty.png";
-import { SellItem } from "../../atoms/State";
+import { SelectProduct, SellItem } from "../../atoms/State";
 import { useRecoilState } from "recoil";
 import { v4 as uuidv4 } from "uuid";
 
@@ -13,6 +13,7 @@ const SellResist = ({
   productImg,
   setProductImg,
   imgToggle,
+  location,
 }) => {
   const [etcToggle, setEtcToggle] = useState(false);
   const [bundleToggle, setBundleToggle] = useState(false);
@@ -21,6 +22,7 @@ const SellResist = ({
   const [addArr, setAddArr] = useState([]);
   const [changedBundleCnt, setChangedBundleCnt] = useState(false);
   const item = useRef(null);
+  const [selectProduct, setSelectProduct] = useRecoilState(SelectProduct);
 
   const handleImg = async (e) => {
     const file = e.target.files[0];
@@ -93,7 +95,7 @@ const SellResist = ({
           <div className="productNameBox">
             <TextForm
               type="text"
-              // value={sellItem.productName}
+              defaultValue={location ? null : selectProduct.productName}
               onChange={handleData}
               id="productName"
               name="productName"
@@ -106,7 +108,7 @@ const SellResist = ({
           <div className="productPrice">
             <TextForm
               type="number"
-              // value={sellItem.salePrice}
+              defaultValue={location ? null : selectProduct.salePrice}
               onChange={handleData}
               id="salePrice"
               name="salePrice"
@@ -117,7 +119,7 @@ const SellResist = ({
             />
             <TextForm
               type="number"
-              // value={sellItem.sellPrice}
+              defaultValue={location ? null : selectProduct.sellPrice}
               onChange={handleData}
               id="sellPrice"
               name="sellPrice"
@@ -139,7 +141,9 @@ const SellResist = ({
             <figure>
               <img
                 className={(imgToggle && "hide").toString()}
-                src={productImg ? productImg : empty}
+                src={
+                  productImg ? productImg : location ? empty : selectProduct.img
+                }
               />
               <canvas id="canvas" />
             </figure>
@@ -159,6 +163,7 @@ const SellResist = ({
                 onChange={handleData}
                 id="seller"
                 name="seller"
+                defaultValue={location ? null : selectProduct.seller}
                 placeholder="ex) 오퍼마켓 (부산시 동래구 수안동...)"
                 text="판매자(사업장 소재지) : "
                 maxLength="80"
@@ -169,6 +174,7 @@ const SellResist = ({
                 onChange={handleData}
                 id="courier"
                 name="courier"
+                defaultValue={location ? null : selectProduct.courier}
                 placeholder="ex) 우체국, 로젠, cj대한통운"
                 text="택배사 : "
                 maxLength="15"
@@ -179,13 +185,19 @@ const SellResist = ({
                 onChange={handleData}
                 id="parcelPrice"
                 name="parcelPrice"
+                defaultValue={location ? null : selectProduct.parcelPrice}
                 placeholder="ex) 3000, 무료"
                 text="배송비 : "
                 maxLength="15"
                 minLength="2"
               />
               <label htmlFor="etc">기타 정보 : </label>
-              <textarea onChange={handleData} name="etc" id="etc" />
+              <textarea
+                onChange={handleData}
+                name="etc"
+                id="etc"
+                defaultValue={location ? null : selectProduct.etc}
+              />
             </FormBox>
           </div>
           <div className="bundleBox">
@@ -194,6 +206,7 @@ const SellResist = ({
                 type="text"
                 onChange={handleBundle}
                 id="bundleCnt"
+                defaultValue={location ? null : selectProduct.bundle.bundleCnt}
                 placeholder="ex) 3, 15, 20"
                 text="추가 할 상품 번들의 수를 입력하세요."
               />
@@ -208,7 +221,14 @@ const SellResist = ({
                   <div key={uuidv4()}>
                     <TextForm
                       type="text"
-                      value={select.capacity}
+                      // value={select.capacity}
+                      defaultValue={
+                        location
+                          ? select.capacity
+                          : bundleCnt.length > index
+                          ? selectProduct.bundle[index].capacity
+                          : null
+                      }
                       onChange={handleBundle}
                       id={`capacity_${index}`}
                       placeholder="ex) 150g, 2L"
@@ -218,7 +238,14 @@ const SellResist = ({
                     />
                     <TextForm
                       type="text"
-                      value={select.amount}
+                      // value={select.amount}
+                      defaultValue={
+                        location
+                          ? select.amount
+                          : bundleCnt.length > index
+                          ? selectProduct.bundle[index].amount
+                          : null
+                      }
                       onChange={handleBundle}
                       id={`amount_${index}`}
                       placeholder="ex) 5세트, 10개, 15묶음"
@@ -228,7 +255,14 @@ const SellResist = ({
                     />
                     <TextForm
                       type="number"
-                      value={select.price}
+                      // value={select.price}
+                      defaultValue={
+                        location
+                          ? select.price
+                          : bundleCnt.length > index
+                          ? selectProduct.bundle[index].price
+                          : null
+                      }
                       onChange={handleBundle}
                       id={`price_${index}`}
                       placeholder="ex) 3000, 50000"

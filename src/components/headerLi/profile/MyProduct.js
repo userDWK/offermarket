@@ -113,6 +113,14 @@ const MyProduct = () => {
 
   const handleModify = (e) => {
     e.preventDefault();
+    const {
+      target: { id, className },
+    } = e;
+    if (className === "sell") {
+      setSelectProduct(mySell[id]);
+    } else if (className === "purchase") {
+      setSelectProduct(myPurchase[id]);
+    }
     navigate("/profile/modify");
   };
 

@@ -57,6 +57,46 @@ const HeaderForm = styled.header`
   .login {
     font-weight: 600;
   }
+
+  @media (max-width: 412px) {
+    display: inline-block;
+    margin: 2rem auto 0;
+
+    .mainLeft {
+      margin: 0 0 0 2rem;
+
+      img {
+        width: 20rem;
+        padding: 0;
+      }
+    }
+
+    .mainCenter {
+      margin: 5rem auto 5rem;
+      width: 90%;
+
+      select {
+        padding: 2rem;
+        border: none;
+        outline:none;
+      }
+      .search {
+        padding: 2rem 0;
+      }
+    }
+
+    .mainRight {
+      position: absolute;
+      top: 2.5rem;
+      right: 0;
+      width: 35rem;
+      margin: 0;
+    }
+
+    hr {
+      display: none;
+    }
+  }
 `;
 
 function Header(props) {

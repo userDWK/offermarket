@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { dbService, storageService } from "../../fbase";
 import { useRecoilState } from "recoil";
 import {
@@ -6,14 +6,14 @@ import {
   IsModal,
   IsResisted,
   Message,
-  SellData,
+  SelectProduct,
   SellItem,
   Today,
   UserObj,
 } from "../../atoms/State";
 import SellResist from "./SellResist";
 import firebase from "firebase/compat/app";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import Modal from "../../Ui/Modal";
 
@@ -28,6 +28,10 @@ function SellResistPage() {
   const [imgToggle, setImgToggle] = useState(false);
   const [isModal, setIsModal] = useRecoilState(IsModal);
   const [message, setMessage] = useRecoilState(Message);
+  const [location, SetLocation] = useState(
+    useLocation().pathname.includes("/resist")
+  );
+  const [selectProduct, setSelectProduct] = useRecoilState(SelectProduct);
 
   const handleProduct = async (e) => {
     e.preventDefault();
@@ -50,13 +54,14 @@ function SellResistPage() {
 
     for (let i = 0; i < sellItem.bundle.length; i++) {
       const item = sellItem.bundle[i];
-      if (!item.capacity || !item.amount || !item.price)
+      if (!item.capacity || !item.amount || !item.price) {
         setMessage({
           type: "error",
           message: "모든 항목을 입력해 주십시오",
           page: undefined,
         });
-      return setIsModal(true);
+        return setIsModal(true);
+      }
     }
 
     setHandleTime((prev) => !prev);
@@ -92,33 +97,44 @@ function SellResistPage() {
           const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
           console.log("다운로드 URL : ", downloadURL);
           const num = uuidv4();
-          await dbService
-            .collection("sell")
-            .doc(today)
-            .set({
-              ...sellItem,
-              uid: userObj.uid,
-              img: downloadURL,
-              resistDate: today,
-              num,
-            });
+          const data = {
+            ...sellItem,
+            uid: userObj.uid,
+            img: downloadURL,
+            resistDate: today,
+            num,
+          };
+
+          location
+            ? await dbService.collection("sell").doc(today).set(data)
+            : await dbService
+                .collection("sell")
+                .doc(selectProduct.resistDate)
+                .set(data);
+
+          !location &&
+            (await dbService
+              .collection("users")
+              .doc(userObj.uid)
+              .update({
+                sellItems: firebase.firestore.FieldValue.arrayRemove({
+                  ...selectProduct,
+                }),
+              }));
 
           await dbService
             .collection("users")
             .doc(userObj.uid)
             .update({
-              sellItems: firebase.firestore.FieldValue.arrayUnion({
-                ...sellItem,
-                uid: userObj.uid,
-                img: downloadURL,
-                resistDate: today,
-                num,
-              }),
+              sellItems: firebase.firestore.FieldValue.arrayUnion(data),
             });
+
+          updateLocalStorage(data);
 
           setSellItem({});
           setIsResisted((prev) => !prev);
           setImgToggle(false);
+          setSelectProduct(null);
         } catch (e) {
           setMessage({
             type: "Error",
@@ -130,7 +146,7 @@ function SellResistPage() {
         }
       }
     );
-    navigate(-1);
+    navigate(location ? -1 : "/profile");
   };
 
   const resizeImg = async () => {
@@ -162,6 +178,15 @@ function SellResistPage() {
       img.onerror = (e) => reject(e);
     });
   };
+
+  const updateLocalStorage = (data) => {
+    const obj = JSON.parse(localStorage.getItem("mySell")).filter(
+      (item, idx) => item !== selectProduct
+    );
+    obj.push(data);
+    localStorage.setItem("mySell", JSON.stringify(obj));
+  };
+
   return (
     <>
       <Modal
@@ -179,6 +204,7 @@ function SellResistPage() {
           productImg={productImg}
           setProductImg={setProductImg}
           imgToggle={imgToggle}
+          location={location}
         />
       </div>
     </>
