@@ -65,6 +65,7 @@ const SellProduct = () => {
         setSelectProduct(JSON.parse(localStorage.getItem("product")));
     }
   }, []);
+  console.log(selectProduct);
   return (
     <>
       <Modal

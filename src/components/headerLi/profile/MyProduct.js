@@ -35,6 +35,7 @@ const MyProduct = () => {
   };
 
   const movePage = (className) => {
+    console.log(selectProduct);
     if (className === "sell")
       navigate(
         `/sell/product/uid=${userObj.uid}/date=${selectProduct.resistDate}`

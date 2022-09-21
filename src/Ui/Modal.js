@@ -94,6 +94,9 @@ const Modal = (props) => {
       case "cart":
         setData("장바구니");
         break;
+      default:
+        setData("Home");
+        break;
     }
   }, [props.page]);
   return (
@@ -106,7 +109,7 @@ const Modal = (props) => {
         <div className="close" onClick={props.close}>
           닫기
         </div>
-        <Link to={props.page && `/${props.page}`}>
+        <Link to={props.page ? `/${props.page}` : "/"}>
           <div className="close move" onClick={props.close}>
             {`${data} 페이지로 이동`}
           </div>

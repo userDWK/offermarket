@@ -44,8 +44,9 @@ function SellResistPage() {
       !sellItem.courier ||
       !productImg
     ) {
+      console.log(1);
       setMessage({
-        type: "error",
+        type: "Error",
         message: "모든 항목을 입력해 주십시오",
         page: undefined,
       });
@@ -55,8 +56,9 @@ function SellResistPage() {
     for (let i = 0; i < sellItem.bundle.length; i++) {
       const item = sellItem.bundle[i];
       if (!item.capacity || !item.amount || !item.price) {
+        console.log(2);
         setMessage({
-          type: "error",
+          type: "Error",
           message: "모든 항목을 입력해 주십시오",
           page: undefined,
         });
@@ -80,8 +82,9 @@ function SellResistPage() {
       (e) => {
         switch (e.code) {
           case "storage/unauthorized":
+            console.log(3);
             setMessage({
-              type: "error",
+              type: "Error",
               message: "허가 되지 않은 경로 입니다",
               page: undefined,
             });
@@ -136,6 +139,7 @@ function SellResistPage() {
           setImgToggle(false);
           setSelectProduct(null);
         } catch (e) {
+          console.log(4);
           setMessage({
             type: "Error",
             message: "에러가 발생하였습니다.",
@@ -181,7 +185,7 @@ function SellResistPage() {
 
   const updateLocalStorage = (data) => {
     const obj = JSON.parse(localStorage.getItem("mySell")).filter(
-      (item, idx) => item !== selectProduct
+      (item, idx) => item.resistDate !== selectProduct.resistDate
     );
     obj.push(data);
     localStorage.setItem("mySell", JSON.stringify(obj));

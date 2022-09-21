@@ -23,6 +23,7 @@ const SellResist = ({
   const [changedBundleCnt, setChangedBundleCnt] = useState(false);
   const item = useRef(null);
   const [selectProduct, setSelectProduct] = useRecoilState(SelectProduct);
+  const bundle = useRef(null);
 
   const handleImg = async (e) => {
     const file = e.target.files[0];
@@ -62,28 +63,33 @@ const SellResist = ({
 
     const [key, idx] = id.split("_");
 
-    setAddArr((prev) => {
-      prev[idx][key] = value;
-
-      return prev;
-    });
+    const newData = { ...bundle.current[idx] };
+    newData[key] = value;
+    bundle.current[idx] = newData;
+    console.log(bundle.current);
   };
 
   const addSelect = (e) => {
     e.preventDefault();
-    const arr = new Array(parseInt(bundleCnt)).fill({}).map((_, idx) => {
+    const arr = new Array(parseInt(bundleCnt)).fill(1).map((_, idx) => {
+      if (selectProduct?.bundle) {
+        if (selectProduct.bundle.length >= parseInt(bundleCnt)) {
+          return selectProduct.bundle[idx];
+        }
+      }
       return {};
     });
     setAddArr(arr);
+    bundle.current = { ...arr };
   };
 
   const addBundleData = (e) => {
+    console.log(addArr);
     setSellItem({
       ...item.current,
-      bundle: addArr,
+      bundle: bundle.current,
     });
   };
-
   return (
     <>
       <FormBox className="trade">
@@ -221,12 +227,11 @@ const SellResist = ({
                   <div key={uuidv4()}>
                     <TextForm
                       type="text"
-                      // value={select.capacity}
                       defaultValue={
-                        location
-                          ? select.capacity
-                          : bundleCnt.length > index
-                          ? selectProduct.bundle[index].capacity
+                        // location
+                        //   ? select.capacity
+                        bundleCnt.length > index
+                          ? bundle.current[index].capacity
                           : null
                       }
                       onChange={handleBundle}
@@ -238,12 +243,11 @@ const SellResist = ({
                     />
                     <TextForm
                       type="text"
-                      // value={select.amount}
                       defaultValue={
-                        location
-                          ? select.amount
-                          : bundleCnt.length > index
-                          ? selectProduct.bundle[index].amount
+                        // location
+                        //   ? select.amount
+                        bundleCnt.length > index
+                          ? bundle.current[index].amount
                           : null
                       }
                       onChange={handleBundle}
@@ -255,12 +259,11 @@ const SellResist = ({
                     />
                     <TextForm
                       type="number"
-                      // value={select.price}
                       defaultValue={
-                        location
-                          ? select.price
-                          : bundleCnt.length > index
-                          ? selectProduct.bundle[index].price
+                        // location
+                        //   ? select.price
+                        bundleCnt.length > index
+                          ? bundle.current[index].price
                           : null
                       }
                       onChange={handleBundle}

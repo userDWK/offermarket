@@ -5,6 +5,7 @@ import { DisSellPage, SellData } from "../../atoms/State";
 const Product_Sell = ({ handleDis }, { ...rest }) => {
   const [sellData, setSellData] = useRecoilState(SellData);
   const [disSellPage, setDisSellPage] = useRecoilState(DisSellPage);
+
   return (
     <div className="itemBox">
       {sellData.length && (
